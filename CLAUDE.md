@@ -14,6 +14,10 @@ minutes, one table."
   and to macOS. Nothing in it depends on which engine is behind the endpoint. The engine's process
   name appears in the header only because `lsof` reports it. The context window is read from the
   `/v1/models` entry when the server declares one there; otherwise it is found behaviourally.
+- Thinking: every speed row and the first agent session run with thinking switched off, as in
+  Kapitsa bench, so stacks do the same work. The default-thinking rows send no switch at all and
+  report reasoning tokens per reply, because most harnesses send none and the Qwen3.8 templates
+  default to the highest effort.
 - Protocol: where a row also exists in Kapitsa bench (writing, reading, follow-up, sustain,
   memory, conditions) benchcode follows `bench/harness/bench.py`: the frozen corpus in `corpus/`,
   the same slices, a random nonce right after the system tag on every cold prompt, explicit
@@ -34,12 +38,14 @@ minutes, one table."
   the tool list, then up to 8 scripted steps that each append an 8K tool result: time per step,
   total, prefix reused per step, well-formed replies), compaction (on the session's conversation,
   where it ended: the summary request, then the first turn of the conversation rebuilt from the
-  summary), sustain, memory, conditions. A summary box, then INVALID reasons and flags, then the
-  saved JSON path.
+  summary), then the same agent rows with no thinking switch sent (tool calls, agent session,
+  compaction: what a harness that leaves the server's default gets; skipped when the server does
+  not reason by default), sustain, memory, conditions. A summary box, then INVALID reasons and
+  flags, then the saved JSON path.
 - benchcode is not an agent and does not choose a compaction policy. The session grows until its
   steps are done or the next step would pass three quarters of the declared window, and compaction
   is measured there. Tool results are text; images are out of scope.
-- `--quick`: 4K and 16K, 3 writing runs, no greedy, no agent session or compaction, no sustain. Default: up to 32K always, 64K and
+- `--quick`: 4K and 16K, 3 writing runs, no greedy, no agent session, compaction or default-thinking rows, no sustain. Default: up to 32K always, 64K and
   128K when the measured reading speed predicts they fit a 15-minute budget. `--deep`: every depth,
   no budget, 5-minute sustain.
 - Output: the table on stdout, one JSON row per run in `results/`.

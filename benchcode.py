@@ -28,7 +28,7 @@ import time
 import urllib.error
 import urllib.request
 
-VERSION = "0.2.1"
+VERSION = "0.3.0"
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(HERE, "results")
 
@@ -120,6 +120,7 @@ TOOL_TRIALS = [  # (prompt, acceptable tools)
     ("Find files matching *.test.ts anywhere in the project.", {"glob", "bash", "grep"}),
     ("Open the file at path src/handlers/auth.py and show me its content.", {"read"}),
 ]
+DEFAULT_THINK_TOKENS = 4096     # reply cap when no thinking switch is sent (reasoning + the tool call)
 SESSION_STEPS = 8               # agent session: tool results appended one per step
 SESSION_RESULT_TOKENS = 8000    # each tool result (a page snapshot, a long file, a test log)
 SESSION_PROMPT_TOKENS = 12000   # the harness's system prompt: instructions, tool list, project notes
@@ -255,6 +256,15 @@ def load_corpus():
     with open(CORPUS_FILE, encoding="utf-8", newline="") as fh:
         text = fh.read()
     return text, hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def reasoning_count(r):
+    """Reasoning tokens in a reply: the usage count when the server gives one, else a share of completion tokens by characters."""
+    if r.reasoning_tokens is not None:
+        return r.reasoning_tokens
+    if r.reasoning and r.completion_tokens:
+        return int(round(r.completion_tokens * len(r.reasoning) / max(1, len(r.reasoning) + len(r.content))))
+    return 0 if r.completion_tokens else None
 
 
 def tool_call_problem(r):
@@ -486,7 +496,9 @@ class Server:
             if "top_k" in s:
                 s["top_k"] = 1
         b = {"model": self.model, "messages": msgs, "max_tokens": max_tokens, **s}
-        if think:  # bench.py think_on: reasoning_effort low, enable_thinking true
+        if think == "default":  # no switch at all: whatever the server and template do when a harness sends nothing
+            pass
+        elif think:  # bench.py think_on: reasoning_effort low, enable_thinking true
             b["reasoning_effort"] = "low"
             if self.no_think_style in ("both", "kwargs"):
                 b["chat_template_kwargs"] = {"enable_thinking": True}
@@ -815,6 +827,8 @@ class Bench:
         leak = r.thinking_leak()
         if leak and not self.s.always_reasons:
             self.invalid(f"{label}: " + "; ".join(leak))
+            self.res.setdefault("leak_evidence", []).append({"label": label, "content_head": r.content[:400], "content_tail": r.content[-200:],
+                                                             "reasoning_head": r.reasoning[:200], "completion_tokens": r.completion_tokens})
 
     # ---- phases
     def run(self):
@@ -868,6 +882,8 @@ class Bench:
                 self.p_protocol()
                 if not self.a.quick:
                     self.p_session(declared)
+                if not self.a.quick and not self.server_down:
+                    self.p_default_thinking(declared)
                 if not self.a.quick and not self.server_down:
                     self.p_sustain(300 if self.a.deep else 180)
             self.res["conditions_end"] = conditions(self.s.pids())
@@ -949,7 +965,8 @@ class Bench:
         default_on = bool(plain.reasoning.strip()) or bool(plain.reasoning_tokens) or "<think>" in plain.content
         leak = off.thinking_leak()
         share = None
-        on = self.s.chat(self.s.body([{"role": "user", "content": "In two sentences, why do leaves change colour in autumn?"}], 400, think=True), timeout=900)
+        on = self.s.chat(self.s.body([{"role": "user", "content": "In two sentences, why do leaves change colour in autumn?"}], 4096 if default_on else 400,
+                                     think="default" if default_on else True), timeout=1800)
         can_turn_on = on.ok and bool(on.thinking_leak())
         if on.ok and on.completion_tokens and on.thinking_leak():
             rt = on.reasoning_tokens if on.reasoning_tokens is not None else (len(on.reasoning) / max(1, len(on.reasoning) + len(on.content))) * on.completion_tokens
@@ -960,7 +977,7 @@ class Bench:
                                         "can_turn_on": can_turn_on, "leak": leak, "reasoning_share_when_on": None if share is None else round(share, 3)}
         sw = {"both": "enable_thinking=false / reasoning_effort=none", "kwargs": "chat_template_kwargs.enable_thinking=false",
               "effort": "reasoning_effort=none"}[self.s.no_think_style]
-        share_note = f"; {share:.0%} of output is reasoning when on" if share is not None else ""
+        share_note = (f"; {share:.0%} of output is reasoning at the server's default" if default_on else f"; {share:.0%} of output is reasoning when on") if share is not None else ""
         if not default_on:
             self.say("✓", "Thinking", "off", ("off by default; the switch turns it on" if can_turn_on else "the model does not reason") + share_note)
         elif not leak:
@@ -1367,7 +1384,7 @@ class Bench:
         if passed < 0.9 * len(trials):
             self.flag(f"tools: only {passed}/{len(trials)} calls well-formed (malformed calls are dropped by the harness)")
 
-    def p_session(self, declared):
+    def p_session(self, declared, default=False):
         """A multi-step agent session with large tool results, then a compaction where it ends.
 
         The conversation is scripted (the assistant turns are ours, not the model's), so every server reads the same
@@ -1375,7 +1392,11 @@ class Bench:
         from request to the end of the model's reply, which should be the next tool call. The session stops after
         SESSION_STEPS, when the time budget is spent, or before the step that would pass WINDOW_FRACTION of the
         declared window, and the compaction is measured on that conversation: what a harness does when the context fills."""
-        self.separator("agent session")
+        think = "default" if default else False
+        tag = ", default" if default else ""
+        key = "session_default" if default else "session"
+        if not default:
+            self.separator("agent session")
         depth = {int(k): v for k, v in self.res["depth"].items() if v.get("prefill_tps")}
         pf = depth[max(depth)]["prefill_tps"] if depth else None
         ratio = self.token_ratio or 1.0
@@ -1387,19 +1408,22 @@ class Bench:
         sid = self.session_id()
         system = {"role": "system", "content": f"[{self.nonce()}] {SESSION_SYSTEM}\n\n# Project notes and repository map\n{self.context(SESSION_PROMPT_TOKENS)}"}
         msgs = [system, {"role": "user", "content": SESSION_TASK}]
-        mx = self.answer_tokens(128)
-        ses = {"steps_planned": steps_planned, "result_tokens": SESSION_RESULT_TOKENS, "steps": [], "stopped": None}
-        self.res["once"]["session"] = ses
-        self.step("Agent session", lambda: f"reading the {fmt_k(SESSION_PROMPT_TOKENS)} system prompt and tool list; " + self.s.progress_note())
-        r0 = self.s.chat(self.s.body(msgs, mx, tools=TOOLS), timeout=3600, session=sid)
+        if default:
+            steps_planned = (self.res["once"].get("session") or {}).get("steps_planned") or steps_planned
+        mx = DEFAULT_THINK_TOKENS if default else self.answer_tokens(128)
+        ses = {"steps_planned": steps_planned, "result_tokens": SESSION_RESULT_TOKENS, "steps": [], "stopped": None, "thinking": "default" if default else "off"}
+        self.res["once"][key] = ses
+        self.step("Agent session" + tag, lambda: f"reading the {fmt_k(SESSION_PROMPT_TOKENS)} system prompt and tool list; " + self.s.progress_note())
+        r0 = self.s.chat(self.s.body(msgs, mx, tools=TOOLS, think=think), timeout=3600, session=sid)
         if not r0.ok:
-            self.say("✗", "Agent session", "failed", (r0.error or "")[:100])
+            self.say("✗", "Agent session" + tag, "failed", (r0.error or "")[:100])
             ses["stopped"] = f"start failed: {r0.error}"
             if r0.status is None or r0.status >= 500:
                 self.server_down = not self.health_check()
             return
         self.check_cold(r0, "agent session start")
-        ses["start"] = {"total_s": r0.total, "ttft_s": r0.ttft, "prompt_tokens": r0.prompt_tokens, "valid_call": tool_call_problem(r0) is None}
+        ses["start"] = {"total_s": r0.total, "ttft_s": r0.ttft, "prompt_tokens": r0.prompt_tokens, "valid_call": tool_call_problem(r0) is None,
+                        "reasoning_tokens": reasoning_count(r0), "finish": r0.finish}
         last_pt = r0.prompt_tokens or int(SESSION_PROMPT_TOKENS * ratio)
         t_session = r0.total
         for k in range(steps_planned):
@@ -1411,8 +1435,8 @@ class Bench:
             result = self.context(SESSION_RESULT_TOKENS, offset=SESSION_RESULT_OFFSET + k * int(SESSION_RESULT_TOKENS * CHARS_PER_TOKEN))
             msgs = msgs + [{"role": "assistant", "content": "", "tool_calls": [{"id": f"call_{k + 1}", "type": "function", "function": {"name": name, "arguments": json.dumps(args)}}]},
                            {"role": "tool", "tool_call_id": f"call_{k + 1}", "content": f"(output of {name}, part {k + 1})\n{result}"}]
-            self.step("Agent session", lambda k=k: f"step {k + 1} of {steps_planned}: a {fmt_k(SESSION_RESULT_TOKENS)} tool result at ~{fmt_k(int(last_pt))} context; " + self.s.progress_note())
-            r = self.s.chat(self.s.body(msgs, mx, tools=TOOLS), timeout=3600, session=sid)
+            self.step("Agent session" + tag, lambda k=k: f"step {k + 1} of {steps_planned}: a {fmt_k(SESSION_RESULT_TOKENS)} tool result at ~{fmt_k(int(last_pt))} context; " + self.s.progress_note())
+            r = self.s.chat(self.s.body(msgs, mx, tools=TOOLS, think=think), timeout=3600, session=sid)
             if not r.ok:
                 ses["stopped"] = "rejected: the window is full" if r.status in REJECT_STATUSES else f"step {k + 1} failed: {(r.error or '')[:80]}"
                 msgs = msgs[:-2]
@@ -1429,8 +1453,9 @@ class Bench:
             ses["steps"].append({"total_s": r.total, "ttft_s": r.ttft, "prompt_tokens": pt, "cached_tokens": cached,
                                  "new_tokens": (pt - cached) if (pt and cached is not None) else None,
                                  "cache_share": min(1.0, cached / last_pt) if (cached is not None and last_pt) else None,
-                                 "problem": tool_call_problem(r)})
-            self.leak_check(r, "agent session")
+                                 "problem": tool_call_problem(r), "reasoning_tokens": reasoning_count(r), "completion_tokens": r.completion_tokens, "finish": r.finish})
+            if not default:
+                self.leak_check(r, "agent session")
             t_session += r.total
             last_pt = pt or expect
             self.mem_sample()
@@ -1438,59 +1463,73 @@ class Bench:
                 break
         steps = ses["steps"]
         if not steps:
-            self.say("·", "Agent session", "no steps", ses["stopped"] or "")
+            self.say("·", "Agent session" + tag, "no steps", ses["stopped"] or "")
             return
         times = [s["total_s"] for s in steps]
         valid = sum(1 for s in steps if not s["problem"]) + (1 if ses["start"]["valid_call"] else 0)
         shares = [s["cache_share"] for s in steps if s["cache_share"] is not None]
+        reasoning = [s["reasoning_tokens"] for s in steps if s.get("reasoning_tokens") is not None]
+        cut = sum(1 for s in steps if s.get("finish") == "length")
         ses.update({"total_s": t_session, "median_step_s": med(times), "first_step_s": times[0], "last_step_s": times[-1],
                     "start_tokens": ses["start"]["prompt_tokens"], "end_tokens": int(last_pt), "valid_calls": valid, "replies": len(steps) + 1,
-                    "median_cache_share": med(shares)})
+                    "median_cache_share": med(shares), "median_reasoning_tokens": med(reasoning) if reasoning else None, "steps_cut": cut})
         note = f"{len(steps)} steps of {fmt_k(SESSION_RESULT_TOKENS)} tool results, {fmt_k(ses['start_tokens'])} -> {fmt_k(int(last_pt))} context; the first read took {fmt_s(r0.total)}"
         if len(steps) < SESSION_STEPS:
             note += f"; {ses['stopped'] or 'fewer steps to fit the time budget'}"
-        self.say("✓", "Agent session", f"{t_session / 60:.1f} min" if t_session >= 90 else fmt_s(t_session), note)
-        self.say("✓" if valid == len(steps) + 1 else "!", "Session step", fmt_s(med(times)),
-                 f"median; first {fmt_s(times[0])}, last {fmt_s(times[-1])}; " +
-                 (f"{med(shares):.0%} of the prefix reused per step; " if shares else "the endpoint reports no cached_tokens; ") +
-                 f"{valid} of {len(steps) + 1} replies were well-formed tool calls")
+        if default:
+            off = self.res["once"].get("session") or {}
+            note = f"no thinking switch sent; {note}"
+            if off.get("median_step_s"):
+                note += f"; {med(times) / off['median_step_s']:.1f}x the thinking-off step"
+        self.say("✓", ("Session" if default else "Agent session") + tag, f"{t_session / 60:.1f} min" if t_session >= 90 else fmt_s(t_session), note)
+        step_note = f"median; first {fmt_s(times[0])}, last {fmt_s(times[-1])}; "
+        if default:
+            step_note += (f"{med(reasoning):,.0f} reasoning tokens a step (median); " if reasoning else "") + (f"{cut} cut at {mx} tokens; " if cut else "")
+        step_note += (f"{med(shares):.0%} of the prefix reused per step; " if shares else "the endpoint reports no cached_tokens; ") + f"{valid} of {len(steps) + 1} replies were well-formed tool calls"
+        self.say("✓" if valid == len(steps) + 1 else "!", ("Step" if default else "Session step") + tag, fmt_s(med(times)), step_note)
         if shares and med(shares) < 0.8:
-            self.flag(f"cache: only {med(shares):.0%} of the prefix reused per session step (each step re-reads earlier results)")
+            self.flag(f"cache: only {med(shares):.0%} of the prefix reused per session step{tag} (each step re-reads earlier results)")
         if valid < len(steps) + 1:
-            self.flag(f"tools: {len(steps) + 1 - valid} of {len(steps) + 1} session replies were not well-formed tool calls")
+            self.flag(f"tools: {len(steps) + 1 - valid} of {len(steps) + 1} session replies{tag} were not well-formed tool calls")
         if not self.server_down:
-            self.p_compaction(system, msgs, int(last_pt), sid)
+            self.p_compaction(system, msgs, int(last_pt), sid, default=default)
 
-    def p_compaction(self, system, msgs, depth_tokens, sid):
+    def p_compaction(self, system, msgs, depth_tokens, sid, default=False):
         """What a harness does when the context fills: ask for a summary on the same conversation (same system prompt
         and tools, so the prefix stays cached), then start a new conversation from the summary."""
-        mx = max(2048, self.answer_tokens(2048))
-        self.step(f"Compaction at {fmt_k(depth_tokens)}", lambda: "the model summarises the conversation; " + self.s.progress_note())
-        r = self.s.chat(self.s.body(msgs + [{"role": "user", "content": COMPACT_PROMPT}], mx, tools=TOOLS), timeout=3600, session=sid)
-        comp = {"depth_tokens": depth_tokens}
-        self.res["once"]["compaction"] = comp
+        think = "default" if default else False
+        tag = ", default" if default else ""
+        label = ("Compaction" + tag) if default else f"Compaction at {fmt_k(depth_tokens)}"
+        mx = (2048 + DEFAULT_THINK_TOKENS) if default else max(2048, self.answer_tokens(2048))
+        self.step(label, lambda: "the model summarises the conversation; " + self.s.progress_note())
+        r = self.s.chat(self.s.body(msgs + [{"role": "user", "content": COMPACT_PROMPT}], mx, tools=TOOLS, think=think), timeout=3600, session=sid)
+        comp = {"depth_tokens": depth_tokens, "thinking": "default" if default else "off"}
+        self.res["once"]["compaction_default" if default else "compaction"] = comp
         if not r.ok:
-            self.say("✗", f"Compaction at {fmt_k(depth_tokens)}", "failed", (r.error or "")[:100])
+            self.say("✗", label, "failed", (r.error or "")[:100])
             comp["error"] = r.error
             return
         summary = (r.content or "").strip()
-        ct = (r.completion_tokens or 0) - (r.reasoning_tokens or 0)
+        ct = max(0, (r.completion_tokens or 0) - (reasoning_count(r) or 0))
         write = r.middle_rate() or ((r.completion_tokens - 1) / (r.total - r.ttft) if (r.completion_tokens and r.ttft and r.total > r.ttft) else None)
         comp.update({"total_s": r.total, "ttft_s": r.ttft, "summary_tokens": ct, "summary_chars": len(summary), "write_tps": write,
-                     "cached_tokens": r.cached_tokens, "prompt_tokens": r.prompt_tokens, "finish": r.finish, "called_tool": bool(r.tool_calls)})
+                     "cached_tokens": r.cached_tokens, "prompt_tokens": r.prompt_tokens, "finish": r.finish, "called_tool": bool(r.tool_calls),
+                     "reasoning_tokens": reasoning_count(r)})
         if not summary:
-            self.say("!", f"Compaction at {fmt_k(depth_tokens)}", "no summary", "the model called a tool instead of summarising" if r.tool_calls else f"empty reply (finish_reason={r.finish})")
-            self.flag("compaction: the model did not produce a summary")
+            self.say("!", label, "no summary", "the model called a tool instead of summarising" if r.tool_calls else f"empty reply (finish_reason={r.finish})")
+            self.flag(f"compaction{tag}: the model did not produce a summary")
             return
         # the conversation after compaction: same system prompt, the summary, the task
         after = [system, {"role": "user", "content": "This session continues an earlier conversation that ran out of context. Summary of that conversation:\n\n"
                           + summary + "\n\nContinue with the task: " + SESSION_TASK}]
-        self.step(f"Compaction at {fmt_k(depth_tokens)}", lambda: "the first turn of the new conversation; " + self.s.progress_note())
-        r2 = self.s.chat(self.s.body(after, self.answer_tokens(128), tools=TOOLS), timeout=3600, session=self.session_id())
+        self.step(label, lambda: "the first turn of the new conversation; " + self.s.progress_note())
+        r2 = self.s.chat(self.s.body(after, DEFAULT_THINK_TOKENS if default else self.answer_tokens(128), tools=TOOLS, think=think), timeout=3600, session=self.session_id())
         if r2.ok:
             comp["next_turn"] = {"total_s": r2.total, "ttft_s": r2.ttft, "prompt_tokens": r2.prompt_tokens, "cached_tokens": r2.cached_tokens,
-                                 "problem": tool_call_problem(r2)}
-        note = f"where the session ended: a {ct:,}-token summary" + (f" written at {fmt_tps(write)}" if write else "") + f" after {fmt_s(r.ttft)}"
+                                 "problem": tool_call_problem(r2), "reasoning_tokens": reasoning_count(r2)}
+        note = (f"at {fmt_k(depth_tokens)} " if default else "") + f"where the session ended: a {ct:,}-token summary" + (f" written at {fmt_tps(write)}" if write else "") + f" after {fmt_s(r.ttft)}"
+        if default and reasoning_count(r):
+            note += f" and {reasoning_count(r):,} reasoning tokens"
         if r.cached_tokens is not None and r.prompt_tokens:
             note += f" ({r.cached_tokens / r.prompt_tokens:.0%} of the conversation cached)"
         if r.finish == "length":
@@ -1498,9 +1537,55 @@ class Bench:
         if r2.ok:
             c2 = r2.cached_tokens
             note += f"; next turn {fmt_s(r2.total)}" + (f" ({c2:,} of {r2.prompt_tokens:,} tokens cached)" if (c2 is not None and r2.prompt_tokens) else "")
-        self.say("✓", f"Compaction at {fmt_k(depth_tokens)}", fmt_s(r.total), note)
+        self.say("✓", label, fmt_s(r.total), note)
         if r.cached_tokens is not None and r.prompt_tokens and r.cached_tokens < 0.8 * r.prompt_tokens:
-            self.flag(f"compaction: only {r.cached_tokens / r.prompt_tokens:.0%} of the conversation was cached when the summary was requested")
+            self.flag(f"compaction{tag}: only {r.cached_tokens / r.prompt_tokens:.0%} of the conversation was cached when the summary was requested")
+
+    def p_default_thinking(self, declared):
+        """The agent rows again with no thinking switch sent: what a harness that leaves the server's default gets.
+        Tool calls (10 trials), the agent session and its compaction. Skipped when the server does not think by default."""
+        self.separator("default thinking")
+        th = self.res["once"].get("thinking") or {}
+        if not th.get("on_by_default"):
+            self.say("·", "Default thinking", "same as above", "the server does not reason unless asked; the rows above are its default")
+            self.res["once"]["default_thinking"] = {"skipped": "off by default"}
+            return
+        if self.s.always_reasons:
+            self.say("·", "Default thinking", "same as above", "the model cannot be switched off; the rows above already include reasoning")
+            self.res["once"]["default_thinking"] = {"skipped": "always reasons"}
+            return
+        self.res["once"]["default_thinking"] = {"switch_sent": None, "reply_cap": DEFAULT_THINK_TOKENS}
+        trials = []
+        for i in range(10):
+            prompt, ok_names = TOOL_TRIALS[i % len(TOOL_TRIALS)]
+            self.step("Tool calls, default", lambda i=i: f"trial {i + 1} of 10: {TOOL_TRIALS[i % len(TOOL_TRIALS)][0][:50]}")
+            r = self.s.chat(self.s.body([{"role": "system", "content": TOOL_SYSTEM}, {"role": "user", "content": prompt}], DEFAULT_THINK_TOKENS, tools=TOOLS, think="default"), timeout=1800)
+            why = (f"request rejected: {(r.error or '')[:80]}" if r.status else (r.error or "request failed")[:80]) if not r.ok else (tool_call_problem(r) or "")
+            trials.append({"i": i, "ok": r.ok and not why, "why": why, "total_s": r.total, "reasoning_tokens": reasoning_count(r), "completion_tokens": r.completion_tokens,
+                           "finish": r.finish, "tool": r.tool_calls[0]["name"] if r.tool_calls else None})
+        passed = sum(1 for t in trials if t["ok"])
+        times = [t["total_s"] for t in trials if t["total_s"]]
+        reasoning = [t["reasoning_tokens"] for t in trials if t["reasoning_tokens"] is not None]
+        cut = sum(1 for t in trials if t["finish"] == "length")
+        self.res["once"]["tools_default"] = {"trials": trials, "passed": passed, "total": len(trials), "median_s": med(times) if times else None,
+                                             "median_reasoning_tokens": med(reasoning) if reasoning else None, "cut": cut}
+        off = self.res["once"].get("tools") or {}
+        off_times = [t.get("total_s") for t in off.get("trials") or [] if t.get("total_s")]
+        note = "no thinking switch sent"
+        if times:
+            note += f"; {fmt_s(med(times))} a call (median)" + (f", {med(times) / med(off_times):.1f}x the thinking-off call" if off_times else "")
+        if reasoning:
+            note += f"; {med(reasoning):,.0f} reasoning tokens a call (median)"
+        if cut:
+            note += f"; {cut} cut at {DEFAULT_THINK_TOKENS} tokens"
+        why = sorted({t["why"] for t in trials if not t["ok"]})
+        if why:
+            note += f"; misses: {'; '.join(why)}"[:160]
+        self.say("✓" if passed >= 9 else "!", "Tool calls, default", f"{passed}/{len(trials)} valid", note)
+        if passed < 9:
+            self.flag(f"tools: only {passed}/{len(trials)} calls well-formed with the server's default thinking")
+        if not self.server_down:
+            self.p_session(declared, default=True)
 
     def p_protocol(self):
         p = {}
@@ -1618,6 +1703,11 @@ class Bench:
         ses, comp = o.get("session") or {}, o.get("compaction") or {}
         s["session"] = {k: ses.get(k) for k in ("total_s", "median_step_s", "first_step_s", "last_step_s", "start_tokens", "end_tokens", "valid_calls", "replies")} if ses.get("steps") else None
         s["compaction"] = {k: comp.get(k) for k in ("depth_tokens", "total_s", "summary_tokens", "write_tps")} if comp.get("total_s") else None
+        sd, cd, td = o.get("session_default") or {}, o.get("compaction_default") or {}, o.get("tools_default") or {}
+        s["default_thinking"] = {"session": {k: sd.get(k) for k in ("total_s", "median_step_s", "median_reasoning_tokens", "valid_calls", "replies", "steps_cut")} if sd.get("steps") else None,
+                                 "compaction": {k: cd.get(k) for k in ("depth_tokens", "total_s", "summary_tokens", "reasoning_tokens")} if cd.get("total_s") else None,
+                                 "tools": {k: td.get(k) for k in ("passed", "total", "median_s", "median_reasoning_tokens", "cut")} if td else None,
+                                 "skipped": (o.get("default_thinking") or {}).get("skipped")}
         if comp.get("total_s") and depth:
             near = min(depth, key=lambda k: abs(k - comp["depth_tokens"]))
             if depth[near].get("prefill_tps"):
@@ -1682,6 +1772,20 @@ class Bench:
         if comp.get("total_s"):
             nt = (comp.get("next_turn") or {}).get("total_s")
             row("Compaction", f"{fmt_s(comp['total_s'])} at {fmt_k(comp['depth_tokens'])}  ·  {comp['summary_tokens']:,}-token summary" + (f"  ·  next turn {fmt_s(nt)}" if nt else ""))
+        sd, cd, td = o.get("session_default") or {}, o.get("compaction_default") or {}, o.get("tools_default") or {}
+        if sd.get("steps") or cd.get("total_s") or td:
+            parts = []
+            if sd.get("steps"):
+                parts.append(f"{fmt_s(sd['median_step_s'])} a step  ·  {sd['total_s'] / 60:.1f} min" + (f"  ·  {sd['median_reasoning_tokens']:,.0f} reasoning tokens a step" if sd.get("median_reasoning_tokens") else ""))
+            if cd.get("total_s"):
+                ntd = (cd.get("next_turn") or {}).get("total_s")
+                parts.append(f"compaction {fmt_s(cd['total_s'])}" + (f", next turn {fmt_s(ntd)}" if ntd else ""))
+            if td:
+                parts.append(f"tool calls {td['passed']}/{td['total']}" + (f" at {fmt_s(td['median_s'])}" if td.get("median_s") else ""))
+            row("Default", "thinking as served, no switch sent:")
+            row("", "  ·  ".join(parts))
+        elif (o.get("default_thinking") or {}).get("skipped"):
+            row("Default", f"thinking: same as above ({o['default_thinking']['skipped']})")
         cs = o.get("cache_survival") or {}
         hits = [depth[k].get("cache_hit") for k in sizes]
         fu = "hit" if hits and all(h is True for h in hits) else "MISS" if any(h is False for h in hits) else "?"

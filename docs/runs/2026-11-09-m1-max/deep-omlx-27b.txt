@@ -1,0 +1,88 @@
+
+   benchcode 0.2.1  ·  http://127.0.0.1:8000  ·  served by python3.11
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  Qwen3.8-27B-oQ4e-fp16-mtp
+
+  ✓ Machine quiet        5 s              no other process over 20% CPU
+  ✓ First request        14.8 s           a 1K-token prompt and a short answer; then 8.82 s: 1.7x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 49% of output is reasoning when on
+  ✓ Warmed up            31.9 s           a 2.9K-token prompt and a tool call
+  ✓ Writing, T = 0.6     36.7 tok/s       35.2–37.6, 5 of 5 runs valid
+  ✓ Writing, greedy      32.0 tok/s       31.4–35.2, 5 of 5 runs valid
+  ── 4K context ──────────────────────────────────────────────────
+  ✓ Reading 4K           159 tok/s        4,187 tokens in 26.4 s
+  ✓ Follow-up at 4K      0.92 s           median of 3 turns; cache hit, 4230 tokens reused; 29x faster than the cold read
+  ✓ Writing at 4K        33.0 tok/s       90% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 4K     31.1 s           a 4K-token tool result read at 151 tok/s, then 44 tokens
+  ✓ Recall at 4K         3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 4K         20.1 GB          now; 24.8 GB peak so far
+  ── 16K context ─────────────────────────────────────────────────
+  ✓ Reading 16K          152 tok/s        16,337 tokens in 107 s
+  ✓ Follow-up at 16K     1.13 s           median of 3 turns; cache hit, 16396 tokens reused; 95x faster than the cold read
+  ✓ Writing at 16K       31.5 tok/s       86% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 16K    36.6 s           a 4K-token tool result read at 135 tok/s, then 45 tokens
+  ✓ Recall at 16K        3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 16K        21.0 GB          now; 25.6 GB peak so far
+  ── 32K context ─────────────────────────────────────────────────
+  ✓ Reading 32K          142 tok/s        32,734 tokens in 230 s
+  ✓ Follow-up at 32K     1.46 s           median of 3 turns; cache hit, 32775 tokens reused; 158x faster than the cold read
+  ✓ Writing at 32K       28.0 tok/s       76% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 32K    44.8 s           a 4K-token tool result read at 109 tok/s, then 48 tokens
+  ✓ Recall at 32K        3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 32K        22.4 GB          now; 29.5 GB peak so far
+  ── 64K context ─────────────────────────────────────────────────
+  ✓ Reading 64K          124 tok/s        65,427 tokens in 526 s
+  ✓ Follow-up at 64K     2.35 s           median of 3 turns; cache hit, 65486 tokens reused; 224x faster than the cold read
+  ✓ Writing at 64K       21.6 tok/s       59% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 64K    48.9 s           a 4K-token tool result read at 89.9 tok/s, then 41 tokens
+  ✓ Recall at 64K        3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 64K        25.1 GB          now; 30.1 GB peak so far
+  ── 128K context ────────────────────────────────────────────────
+  ✓ Reading 128K         94.8 tok/s       131,120 tokens in 1383 s
+  ✓ Follow-up at 128K    3.63 s           median of 3 turns; cache hit, 131179 tokens reused; 381x faster than the cold read
+  ✓ Writing at 128K      15.4 tok/s       42% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 128K   78.8 s           a 4K-token tool result read at 59.2 tok/s, then 50 tokens
+  ✓ Recall at 128K       3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 128K       31.1 GB          now; 46.5 GB peak so far
+  ✓ Window               tested to 128K   262K declared by /v1/models (max_model_len); not probed past the declared window
+  ── once per run ────────────────────────────────────────────────
+  ✓ Cache survival       hit / hit        new question on the same prefix: hit; prefix after another conversation: kept
+  ✓ Tool calls           10/10 valid      round trip ok; forced choice ignored; 1 chose another tool first (glob), which is not an error; with thinking on: structured
+  ✓ Protocol             ok               usage in streams; finish reasons correct; when a tool call is cut by the output cap, nothing is streamed
+  ── agent session ───────────────────────────────────────────────
+  ✓ Agent session        12.3 min         8 steps of 8K tool results, 13K -> 80K context; the first read took 92.8 s
+  ✓ Session step         80.9 s           median; first 65.6 s, last 98.3 s; 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls
+  ✓ Compaction at 80K    96.6 s           where the session ended: a 2,048-token summary written at 21.9 tok/s after 3.01 s (100% of the conversation cached); cut at 2048 tokens; next turn 22.8 s (12,288 of 15,197 tokens cached)
+  ✓ Sustain              +0%              34.6 -> 34.7 tok/s over 20 runs in 5 min; thermal nominal -> fair; -6% against the first writing row (36.7)
+  ✓ Memory               46.5 GB peak     idle 198 MB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  Qwen3.8-27B-oQ4e-fp16-mtp                                  ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Writing    36.7 tok/s  T = 0.6   ·   32.0 tok/s  greedy                 │
+  │                                                                          │
+  │                    4K      16K      32K      64K     128K  context       │
+  │  Reading          159      152      142      124     94.8  tok/s         │
+  │  Follow-up       0.92     1.13     1.46     2.35     3.63  s             │
+  │  Writing         33.0     31.5     28.0     21.6     15.4  tok/s         │
+  │  Agent step      31.1     36.6     44.8     48.9     78.8  s             │
+  │  Recall           3/3      3/3      3/3      3/3      3/3                │
+  │  Memory          20.1     21.0     22.4     25.1     31.1  GB            │
+  │                                                                          │
+  │  Window     262K declared  ·  tested to 128K                             │
+  │  Session    8 x 8K results  ·  80.9 s a step  ·  12.3 min  ·  13K -> 80K │
+  │  Compaction 96.6 s at 80K  ·  2,048-token summary  ·  next turn 22.8 s   │
+  │  Cache      follow-up hit  ·  new question hit  ·  survives others       │
+  │  Tool calls 10/10 valid  ·  round trip ok                                │
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     46.5 GB peak  ·  idle 198 MB                                 │
+  │  Sustain    +0% over 5 min  ·  thermal nominal -> fair                   │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             no other process over 20% CPU  ·  elapsed 75.5 min           │
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ≈ projection, not a measurement: a 12-turn agent task at 16K context would take about 9.1 min (cold read + 12 agent steps)
+  ≈ projection, not a measurement: a harness that compacts with a different system prompt misses the cache and re-reads the 80K conversation first: about 10.7 min at the 64K reading rate
+  › Saved results/benchcode-20261109-143438-m1-max-Qwen3.8-27B-oQ4e-fp16-mtp.json
+exit 0

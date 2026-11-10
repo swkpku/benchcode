@@ -1,0 +1,1291 @@
+{
+ "benchcode": "0.2.1",
+ "date": "2026-11-09T18:03:05",
+ "server_url": "http://127.0.0.1:11434",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "\u2713",
+   "label": "Machine quiet",
+   "value": "5 s",
+   "note": "no other process over 20% CPU"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "16.3 s",
+   "note": "a 1K-token prompt and a short answer; then 13.2 s: 1.2x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off by switch",
+   "note": "on by default; enable_thinking=false / reasoning_effort=none turns it off; 45% of output is reasoning when on"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "48.2 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing, T = 0.6",
+   "value": "23.6 tok/s",
+   "note": "19.5\u201325.4, 5 of 5 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing, greedy",
+   "value": "25.2 tok/s",
+   "note": "25.1\u201325.7, 5 of 5 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 4K",
+   "value": "105 tok/s",
+   "note": "4,186 tokens in 40.0 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 4K",
+   "value": "0.60 s",
+   "note": "median of 3 turns; cache hit, 4237 tokens reused; 67x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 4K",
+   "value": "22.3 tok/s",
+   "note": "94% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 4K",
+   "value": "46.2 s",
+   "note": "a 4K-token tool result read at 101 tok/s, then 46 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 4K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 4K",
+   "value": "26.7 GB",
+   "note": "now; 32.4 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 16K",
+   "value": "101 tok/s",
+   "note": "16,330 tokens in 161 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 16K",
+   "value": "0.70 s",
+   "note": "median of 3 turns; cache hit, 16775 tokens reused; 230x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 16K",
+   "value": "19.0 tok/s",
+   "note": "80% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 16K",
+   "value": "52.3 s",
+   "note": "a 4K-token tool result read at 93.9 tok/s, then 39 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 16K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request (answer cut by max_tokens)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 16K",
+   "value": "27.1 GB",
+   "note": "now; 36.8 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 32K",
+   "value": "96.3 tok/s",
+   "note": "32,721 tokens in 340 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 32K",
+   "value": "0.74 s",
+   "note": "median of 3 turns; cache hit, 32811 tokens reused; 457x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 32K",
+   "value": "17.5 tok/s",
+   "note": "74% of the short-context rate, 3 of 3 runs valid; 1 stopped before 512 tokens and were not counted"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 32K",
+   "value": "55.6 s",
+   "note": "a 4K-token tool result read at 85.7 tok/s, then 46 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 32K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 32K",
+   "value": "28.8 GB",
+   "note": "now; 43.7 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 64K",
+   "value": "85.0 tok/s",
+   "note": "65,374 tokens in 769 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 64K",
+   "value": "1.06 s",
+   "note": "median of 3 turns; cache hit, 65540 tokens reused; 727x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 64K",
+   "value": "12.7 tok/s",
+   "note": "54% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 64K",
+   "value": "68.4 s",
+   "note": "a 4K-token tool result read at 65.3 tok/s, then 48 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 64K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 64K",
+   "value": "38.1 GB",
+   "note": "now; 54.5 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 128K",
+   "value": "67.1 tok/s",
+   "note": "130,997 tokens in 1951 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 128K",
+   "value": "1.52 s",
+   "note": "median of 3 turns; cache hit, 131321 tokens reused; 1282x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 128K",
+   "value": "9.1 tok/s",
+   "note": "38% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 128K",
+   "value": "110 s",
+   "note": "a 4K-token tool result read at 43.7 tok/s, then 64 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 128K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 128K",
+   "value": "30.5 GB",
+   "note": "now; 59.1 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Window",
+   "value": "tested to 128K",
+   "note": "not declared by /v1/models; not probed further"
+  },
+  {
+   "mark": "!",
+   "label": "Cache survival",
+   "value": "miss / hit",
+   "note": "new question on the same prefix: miss; prefix after another conversation: kept"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Tool calls",
+   "value": "10/10 valid",
+   "note": "round trip FAILED; forced choice ignored; 1 chose another tool first (glob), which is not an error; with thinking on: structured"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Protocol",
+   "value": "ok",
+   "note": "usage in streams; finish reasons correct; when a tool call is cut by the output cap, nothing is streamed"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent session",
+   "value": "16.7 min",
+   "note": "8 steps of 8K tool results, 13K -> 80K context; the first read took 131 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Session step",
+   "value": "107 s",
+   "note": "median; first 91.7 s, last 136 s; 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Compaction at 80K",
+   "value": "212 s",
+   "note": "where the session ended: a 1,415-token summary written at 12.3 tok/s after 97.4 s (92% of the conversation cached); next turn 70.2 s (8,191 of 14,497 tokens cached)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Sustain",
+   "value": "+1%",
+   "note": "21.8 -> 22.1 tok/s over 12 runs in 5 min; thermal fair -> fair; -7% against the first writing row (23.6)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "60.2 GB peak",
+   "note": "idle 16 MB before the first request; includes every conversation the server still keeps; swap grew 774 MB"
+  }
+ ],
+ "flags": [
+  "reading 16K: turn 1 finish_reason=length (some engines do not cache a turn cut by max_tokens)",
+  "cache: a new question on a shared prefix misses (subagents and retries pay the full read)"
+ ],
+ "invalid": [
+  "reading 128K: content contains </think>"
+ ],
+ "depth": {
+  "4000": {
+   "size": 4000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 39.9612,
+    "total_s": 40.834,
+    "prompt_tokens": 4186,
+    "cached_tokens": 5,
+    "completion_tokens": 25,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 89,
+    "reasoning_chars": 0,
+    "events": 23,
+    "timings": {
+     "prompt_n": 4186,
+     "prompt_ms": 39799,
+     "prompt_per_token_ms": 9.50764452938366,
+     "prompt_per_second": 105.17852207341893,
+     "predicted_n": 25,
+     "predicted_ms": 1017,
+     "predicted_per_token_ms": 40.68,
+     "predicted_per_second": 24.582104228121928
+    }
+   },
+   "prompt_tokens": 4186,
+   "ttft_s": 39.9612370840041,
+   "prefill_tps": 104.75151185135846,
+   "cold_cached": 5,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. On the fridge door in the Lisbon office kitchen.\n2. Bramble.\n3. Every second Thursday.",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.5999601249932311,
+     "prompt_tokens": 4234,
+     "cached_tokens": 4211,
+     "finish": "stop",
+     "new_tps": 38.335881072528764
+    },
+    {
+     "ttft_s": 0.6073809580120724,
+     "prompt_tokens": 4265,
+     "cached_tokens": 4237,
+     "finish": "stop",
+     "new_tps": 46.099568369154355
+    },
+    {
+     "ttft_s": 0.545438707980793,
+     "prompt_tokens": 4290,
+     "cached_tokens": 4269,
+     "finish": "stop",
+     "new_tps": 38.5011178941475
+    }
+   ],
+   "followup_ttft_s": 0.5999601249932311,
+   "followup_cached": 4237,
+   "cache_saving": 66.60648836363075,
+   "cache_hit": true,
+   "write_tps": 22.337480488984916,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.944580590122071,
+   "step": {
+    "total_s": 46.198640125017846,
+    "ttft_s": 43.92981787500321,
+    "new_tokens": 4456,
+    "cached_tokens": 4285,
+    "new_tps": 101.43452023131508,
+    "answer_tokens": 46
+   },
+   "memory_bytes": 28623846280,
+   "memory_peak_bytes": 34754640776,
+   "mapped_bytes": 3063808
+  },
+  "16000": {
+   "size": 16000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 161.4755,
+    "total_s": 173.557,
+    "prompt_tokens": 16330,
+    "cached_tokens": 5,
+    "completion_tokens": 256,
+    "reasoning_tokens": null,
+    "finish": "length",
+    "tool_calls": [],
+    "content_chars": 1012,
+    "reasoning_chars": 0,
+    "events": 235,
+    "timings": {
+     "prompt_n": 16330,
+     "prompt_ms": 161285,
+     "prompt_per_token_ms": 9.87660747091243,
+     "prompt_per_second": 101.24934122826053,
+     "predicted_n": 256,
+     "predicted_ms": 12243,
+     "predicted_per_token_ms": 47.82421875,
+     "predicted_per_second": 20.90990770236053
+    }
+   },
+   "prompt_tokens": 16330,
+   "ttft_s": 161.4754739999771,
+   "prefill_tps": 101.12990905357128,
+   "cold_cached": 5,
+   "recall": 3,
+   "finish": "length",
+   "answer": "1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen (`modeling_granite_speech.py`).\n2. Priya's cat is called Bramble (`modeling_modernvbert.py`).\n3. The staging database credential is rotated every second Thursday (`modeling_xcodec.py`).\n\n1. Pinned to the fridge door in the Lisbon office kitchen\n2. Bramble\n3. Every second Thursday\n\nWait, the user asked for \"one short line",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.7035808750079013,
+     "prompt_tokens": 16609,
+     "cached_tokens": 16585,
+     "finish": "stop",
+     "new_tps": 34.11121713581324
+    },
+    {
+     "ttft_s": 0.7138610410038382,
+     "prompt_tokens": 16803,
+     "cached_tokens": 16775,
+     "finish": "stop",
+     "new_tps": 39.22331993440367
+    },
+    {
+     "ttft_s": 0.6908806250139605,
+     "prompt_tokens": 17005,
+     "cached_tokens": 16984,
+     "finish": "length",
+     "new_tps": 30.395989176242505
+    }
+   ],
+   "followup_ttft_s": 0.7035808750079013,
+   "followup_cached": 16775,
+   "cache_saving": 229.50520648839938,
+   "cache_hit": true,
+   "write_tps": 18.992311089475162,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.8031240777367386,
+   "step": {
+    "total_s": 52.33501370801241,
+    "ttft_s": 50.18514633300947,
+    "new_tokens": 4713,
+    "cached_tokens": 17000,
+    "new_tps": 93.91224982639946,
+    "answer_tokens": 39
+   },
+   "memory_bytes": 29074455384,
+   "memory_peak_bytes": 39467678552,
+   "mapped_bytes": 3096576
+  },
+  "32000": {
+   "size": 32000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 339.8486,
+    "total_s": 341.163,
+    "prompt_tokens": 32721,
+    "cached_tokens": 5,
+    "completion_tokens": 24,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 86,
+    "reasoning_chars": 0,
+    "events": 22,
+    "timings": {
+     "prompt_n": 32721,
+     "prompt_ms": 339654,
+     "prompt_per_token_ms": 10.380306225359861,
+     "prompt_per_second": 96.33627161758731,
+     "predicted_n": 24,
+     "predicted_ms": 1469,
+     "predicted_per_token_ms": 61.208333333333336,
+     "predicted_per_second": 16.337644656228726
+    }
+   },
+   "prompt_tokens": 32721,
+   "ttft_s": 339.8486384580028,
+   "prefill_tps": 96.2810978100874,
+   "cold_cached": 5,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. The fridge door in the Lisbon office kitchen.\n2. Bramble.\n3. Every second Thursday.",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.8055429170199204,
+     "prompt_tokens": 32768,
+     "cached_tokens": 32745,
+     "finish": "stop",
+     "new_tps": 28.55217209914494
+    },
+    {
+     "ttft_s": 0.7350104579818435,
+     "prompt_tokens": 32839,
+     "cached_tokens": 32811,
+     "finish": "stop",
+     "new_tps": 38.094696063075155
+    },
+    {
+     "ttft_s": 0.743091624986846,
+     "prompt_tokens": 32890,
+     "cached_tokens": 32869,
+     "finish": "stop",
+     "new_tps": 28.260310429917354
+    }
+   ],
+   "followup_ttft_s": 0.743091624986846,
+   "followup_cached": 32811,
+   "cache_saving": 457.34419152418616,
+   "cache_hit": true,
+   "write_tps": 17.489852275774044,
+   "write_runs": 3,
+   "write_stopped_early": 1,
+   "write_retention": 0.7395899010161481,
+   "step": {
+    "total_s": 55.64908924998599,
+    "ttft_s": 53.05081441599759,
+    "new_tokens": 4544,
+    "cached_tokens": 32885,
+    "new_tps": 85.65372746906873,
+    "answer_tokens": 46
+   },
+   "memory_bytes": 30907972440,
+   "memory_peak_bytes": 46877457240,
+   "mapped_bytes": 3129344
+  },
+  "64000": {
+   "size": 64000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 768.6984,
+    "total_s": 772.708,
+    "prompt_tokens": 65374,
+    "cached_tokens": 0,
+    "completion_tokens": 61,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 214,
+    "reasoning_chars": 0,
+    "events": 59,
+    "timings": {
+     "prompt_n": 65374,
+     "prompt_ms": 768381,
+     "prompt_per_token_ms": 11.753617646159023,
+     "prompt_per_second": 85.08018808377615,
+     "predicted_n": 61,
+     "predicted_ms": 4267,
+     "predicted_per_token_ms": 69.95081967213115,
+     "predicted_per_second": 14.295758143895009
+    }
+   },
+   "prompt_tokens": 65374,
+   "ttft_s": 768.6983931669965,
+   "prefill_tps": 85.04505873969971,
+   "cold_cached": 0,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen (`modeling_modernvbert.py`).\n2. Priya's cat is called Bramble (`modeling_emu3.py`).\n3. Every second Thursday (`modeling_deberta_v2.py`).",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 1.0599437079799827,
+     "prompt_tokens": 65458,
+     "cached_tokens": 65435,
+     "finish": "stop",
+     "new_tps": 21.699265561784305
+    },
+    {
+     "ttft_s": 1.0568698330025654,
+     "prompt_tokens": 65568,
+     "cached_tokens": 65540,
+     "finish": "stop",
+     "new_tps": 26.49332881462994
+    },
+    {
+     "ttft_s": 1.0422961660078727,
+     "prompt_tokens": 65668,
+     "cached_tokens": 65647,
+     "finish": "length",
+     "new_tps": 20.147824279573705
+    }
+   ],
+   "followup_ttft_s": 1.0568698330025654,
+   "followup_cached": 65540,
+   "cache_saving": 727.3349746232473,
+   "cache_hit": true,
+   "write_tps": 12.714293525460276,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.5376467989389725,
+   "step": {
+    "total_s": 68.43978583399439,
+    "ttft_s": 64.23922833401593,
+    "new_tokens": 4194,
+    "cached_tokens": 65663,
+    "new_tps": 65.28721014818285,
+    "answer_tokens": 48
+   },
+   "memory_bytes": 40950791000,
+   "memory_peak_bytes": 58497547096,
+   "mapped_bytes": 3260416
+  },
+  "128000": {
+   "size": 128000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 1951.3964,
+    "total_s": 1972.699,
+    "prompt_tokens": 130997,
+    "cached_tokens": 4,
+    "completion_tokens": 146,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 571,
+    "reasoning_chars": 0,
+    "events": 140,
+    "timings": {
+     "prompt_n": 130997,
+     "prompt_ms": 1946812,
+     "prompt_per_token_ms": 14.86150064505294,
+     "prompt_per_second": 67.28795589918288,
+     "predicted_n": 146,
+     "predicted_ms": 25780,
+     "predicted_per_token_ms": 176.57534246575344,
+     "predicted_per_second": 5.663304887509698
+    }
+   },
+   "prompt_tokens": 130997,
+   "ttft_s": 1951.3963882079988,
+   "prefill_tps": 67.12987724667094,
+   "cold_cached": 4,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen (noted in `modeling_altclip.py`).\n2. Priya's cat is called Bramble (noted in `modeling_detr.py`).\n3. The staging database credential is rotated every second Thursday (noted in `modeling_mixtral.py`).\n</think>\n\n1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen (comment in `modeling_altclip.py`)",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 2.0549061250058003,
+     "prompt_tokens": 131166,
+     "cached_tokens": 131143,
+     "finish": "stop",
+     "new_tps": 11.192725409748379
+    },
+    {
+     "ttft_s": 1.5219979590037838,
+     "prompt_tokens": 131349,
+     "cached_tokens": 131321,
+     "finish": "stop",
+     "new_tps": 18.396870925061727
+    },
+    {
+     "ttft_s": 1.4688760829740204,
+     "prompt_tokens": 131428,
+     "cached_tokens": 131407,
+     "finish": "length",
+     "new_tps": 14.296645063129823
+    }
+   ],
+   "followup_ttft_s": 1.5219979590037838,
+   "followup_cached": 131321,
+   "cache_saving": 1282.1281241962215,
+   "cache_hit": true,
+   "write_tps": 9.069589987315085,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.38352394606938134,
+   "step": {
+    "total_s": 109.76576216699323,
+    "ttft_s": 103.03537695799605,
+    "new_tokens": 4498,
+    "cached_tokens": 131423,
+    "new_tps": 43.65490895261808,
+    "answer_tokens": 64
+   },
+   "memory_bytes": 32761969472,
+   "memory_peak_bytes": 63493569344,
+   "mapped_bytes": 3276800
+  }
+ },
+ "once": {
+  "quiet": {},
+  "first_request": {
+   "totals_s": [
+    16.263,
+    13.267,
+    13.063
+   ],
+   "penalty": 1.24
+  },
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.454
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 27.922,
+    "total_s": 40.269,
+    "prompt_tokens": 2922,
+    "cached_tokens": 2,
+    "completion_tokens": 256,
+    "reasoning_tokens": null,
+    "finish": "length",
+    "tool_calls": [],
+    "content_chars": 1183,
+    "reasoning_chars": 0,
+    "events": 242,
+    "timings": {
+     "prompt_n": 2922,
+     "prompt_ms": 27644,
+     "prompt_per_token_ms": 9.460643394934976,
+     "prompt_per_second": 105.70105628707857,
+     "predicted_n": 256,
+     "predicted_ms": 12607,
+     "predicted_per_token_ms": 49.24609375,
+     "predicted_per_second": 20.306179106845402
+    }
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 7.8983,
+    "total_s": 7.898,
+    "prompt_tokens": 732,
+    "cached_tokens": 2,
+    "completion_tokens": 26,
+    "reasoning_tokens": null,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 1,
+    "timings": {
+     "prompt_n": 732,
+     "prompt_ms": 6707,
+     "prompt_per_token_ms": 9.162568306010929,
+     "prompt_per_second": 109.13970478604443,
+     "predicted_n": 26,
+     "predicted_ms": 1174,
+     "predicted_per_token_ms": 45.15384615384615,
+     "predicted_per_second": 22.146507666098806
+    }
+   }
+  },
+  "writing": {
+   "median_tps": 23.64804096397765,
+   "min_tps": 19.542457933169327,
+   "max_tps": 25.364382088862833,
+   "valid_runs": 5,
+   "runs": 5,
+   "draft_acceptance": null,
+   "flags": []
+  },
+  "writing_greedy": {
+   "median_tps": 25.190449689173732,
+   "min_tps": 25.127441855620948,
+   "max_tps": 25.67438023644118,
+   "valid_runs": 5,
+   "runs": 5,
+   "draft_acceptance": null,
+   "flags": []
+  },
+  "cache_survival": {
+   "cold": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 39.9594,
+    "total_s": 41.063,
+    "prompt_tokens": 4186,
+    "cached_tokens": 4,
+    "completion_tokens": 25,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 89,
+    "reasoning_chars": 0,
+    "events": 23,
+    "timings": {
+     "prompt_n": 4186,
+     "prompt_ms": 39811,
+     "prompt_per_token_ms": 9.510511227902532,
+     "prompt_per_second": 105.14681871844465,
+     "predicted_n": 25,
+     "predicted_ms": 1230,
+     "predicted_per_token_ms": 49.2,
+     "predicted_per_second": 20.32520325203252
+    }
+   },
+   "new_question": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 39.3339,
+    "total_s": 40.349,
+    "prompt_tokens": 4127,
+    "cached_tokens": 4,
+    "completion_tokens": 22,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 92,
+    "reasoning_chars": 0,
+    "events": 22,
+    "timings": {
+     "prompt_n": 4127,
+     "prompt_ms": 39206,
+     "prompt_per_token_ms": 9.49987884661982,
+     "prompt_per_second": 105.2645003315819,
+     "predicted_n": 22,
+     "predicted_ms": 1123,
+     "predicted_per_token_ms": 51.04545454545455,
+     "predicted_per_second": 19.590382902938558
+    }
+   },
+   "after_other": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 0.546,
+    "total_s": 0.925,
+    "prompt_tokens": 4239,
+    "cached_tokens": 4211,
+    "completion_tokens": 6,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 29,
+    "reasoning_chars": 0,
+    "events": 6,
+    "timings": {
+     "prompt_n": 4239,
+     "prompt_ms": 408,
+     "prompt_per_token_ms": 0.09624911535739561,
+     "prompt_per_second": 10389.70588235294,
+     "predicted_n": 6,
+     "predicted_ms": 468,
+     "predicted_per_token_ms": 78,
+     "predicted_per_second": 12.820512820512821
+    }
+   },
+   "new_question_hit": false,
+   "survives_other_conversation": true,
+   "inferred_from_timing": false
+  },
+  "tools": {
+   "trials": [
+    {
+     "i": 0,
+     "prompt": "Read the file src/main.py.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "read",
+     "expected_tool": true
+    },
+    {
+     "i": 1,
+     "prompt": "Create a file named notes/todo.md whose content is exactly: ",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "write",
+     "expected_tool": true
+    },
+    {
+     "i": 2,
+     "prompt": "Run the test suite with: python3 -m pytest -q",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "bash",
+     "expected_tool": true
+    },
+    {
+     "i": 3,
+     "prompt": "In config.py replace the line `TIMEOUT = 30` with `TIMEOUT =",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "glob",
+     "expected_tool": false
+    },
+    {
+     "i": 4,
+     "prompt": "Find every Python file under the src directory.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "glob",
+     "expected_tool": true
+    },
+    {
+     "i": 5,
+     "prompt": "Search the repository for the string TODO.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "grep",
+     "expected_tool": true
+    },
+    {
+     "i": 6,
+     "prompt": "Write a C++ hello world program to hello.cpp. It must #inclu",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "write",
+     "expected_tool": true
+    },
+    {
+     "i": 7,
+     "prompt": "Read lines 10 to 20 of README.md.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "read",
+     "expected_tool": true
+    },
+    {
+     "i": 8,
+     "prompt": "Run `ls -la` in the current directory with a timeout of 5000",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "bash",
+     "expected_tool": true
+    },
+    {
+     "i": 9,
+     "prompt": "Create data/sample.json containing a JSON object with keys \"",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "write",
+     "expected_tool": true
+    }
+   ],
+   "passed": 10,
+   "total": 10,
+   "round_trip": false,
+   "forced_choice": false,
+   "tool_call_with_thinking_on": "structured",
+   "other_tool_first": 1
+  },
+  "protocol": {
+   "stream_usage": true,
+   "plain_with_tools_finish": "stop",
+   "plain_with_tools_called": false,
+   "cap_finish": "length",
+   "truncated_tool_call": {
+    "status": 200,
+    "finish": "length",
+    "tool_calls": 0,
+    "error": null,
+    "content_chars": 0,
+    "events": 0
+   }
+  },
+  "session": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [
+    {
+     "total_s": 91.70967779197963,
+     "ttft_s": 91.70957949999138,
+     "prompt_tokens": 21656,
+     "cached_tokens": 13053,
+     "new_tokens": 8603,
+     "cache_share": 0.9996170929698269,
+     "problem": null
+    },
+    {
+     "total_s": 97.40042141699814,
+     "ttft_s": 97.40031004199409,
+     "prompt_tokens": 30337,
+     "cached_tokens": 21651,
+     "new_tokens": 8686,
+     "cache_share": 0.999769117103805,
+     "problem": null
+    },
+    {
+     "total_s": 89.41402729100082,
+     "ttft_s": 89.41390370798763,
+     "prompt_tokens": 37933,
+     "cached_tokens": 30366,
+     "new_tokens": 7567,
+     "cache_share": 1.0,
+     "problem": null
+    },
+    {
+     "total_s": 105.83341179200215,
+     "ttft_s": 105.83329633300309,
+     "prompt_tokens": 46410,
+     "cached_tokens": 37928,
+     "new_tokens": 8482,
+     "cache_share": 0.9998681886484064,
+     "problem": null
+    },
+    {
+     "total_s": 108.99117733398452,
+     "ttft_s": 108.99105258399504,
+     "prompt_tokens": 54564,
+     "cached_tokens": 46439,
+     "new_tokens": 8125,
+     "cache_share": 1.0,
+     "problem": null
+    },
+    {
+     "total_s": 114.36287895901478,
+     "ttft_s": 114.362761958997,
+     "prompt_tokens": 62557,
+     "cached_tokens": 54559,
+     "new_tokens": 7998,
+     "cache_share": 0.9999083644894069,
+     "problem": null
+    },
+    {
+     "total_s": 130.00185599998804,
+     "ttft_s": 130.00173833299777,
+     "prompt_tokens": 71184,
+     "cached_tokens": 62552,
+     "new_tokens": 8632,
+     "cache_share": 0.9999200728935211,
+     "problem": null
+    },
+    {
+     "total_s": 135.90102145800483,
+     "ttft_s": 135.9009122500138,
+     "prompt_tokens": 79671,
+     "cached_tokens": 71179,
+     "new_tokens": 8492,
+     "cache_share": 0.9999297594965161,
+     "problem": null
+    }
+   ],
+   "stopped": null,
+   "start": {
+    "total_s": 130.92522362497402,
+    "ttft_s": 127.98165487498045,
+    "prompt_tokens": 13058,
+    "valid_call": true
+   },
+   "total_s": 1004.539695667947,
+   "median_step_s": 107.41229456299334,
+   "first_step_s": 91.70967779197963,
+   "last_step_s": 135.90102145800483,
+   "start_tokens": 13058,
+   "end_tokens": 79671,
+   "valid_calls": 9,
+   "replies": 9,
+   "median_cache_share": 0.999914218691464
+  },
+  "compaction": {
+   "depth_tokens": 79671,
+   "total_s": 211.77457137501915,
+   "ttft_s": 97.36366050000652,
+   "summary_tokens": 1415,
+   "summary_chars": 5922,
+   "write_tps": 12.34419472305971,
+   "cached_tokens": 73727,
+   "prompt_tokens": 79771,
+   "finish": "stop",
+   "called_tool": false,
+   "next_turn": {
+    "total_s": 70.15061174999573,
+    "ttft_s": 63.97859266700107,
+    "prompt_tokens": 14497,
+    "cached_tokens": 8191,
+    "problem": null
+   }
+  },
+  "sustain": {
+   "seconds": 300,
+   "runs": 12,
+   "thermal_start": "fair",
+   "thermal_end": "fair",
+   "first_third_tps": 21.84930236725753,
+   "last_third_tps": 22.068109745768865,
+   "falloff_pct": -1.0014387408507464,
+   "vs_fresh_pct": -6.681023686551657
+  },
+  "memory": {
+   "idle_bytes": 16433968,
+   "peak_bytes": 64676510528,
+   "end_bytes": 34429926208,
+   "mapped_bytes": 3407872,
+   "swap_growth_bytes": 811534910
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "ollama",
+  "pid": 85724
+ },
+ "model": "qwen3.8:27b-mlx",
+ "model_entry": {
+  "id": "qwen3.8:27b-mlx",
+  "object": "model",
+  "created": 1791070003,
+  "owned_by": "library"
+ },
+ "window_declared": null,
+ "window_source": null,
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 293664194,
+  "loadavg": "{ 1.76 1.35 0.99 }",
+  "busy_processes": []
+ },
+ "memory_idle_bytes": 16433968,
+ "ladder_sizes": [
+  4000,
+  16000,
+  32000,
+  64000,
+  128000
+ ],
+ "window": {
+  "declared": null,
+  "source": null,
+  "tested_to": 128000,
+  "skipped": [],
+  "past_window": null
+ },
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "fair",
+  "swap_used_bytes": 1105199104,
+  "loadavg": "{ 1.15 1.12 0.78 }",
+  "busy_processes": [
+   "NotificationCenter 28%"
+  ]
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": []
+ },
+ "elapsed_s": 6476.3,
+ "summary": {
+  "writing_tps": 23.64804096397765,
+  "writing_greedy_tps": 25.190449689173732,
+  "reading_tps": {
+   "4000": 104.75151185135846,
+   "16000": 101.12990905357128,
+   "32000": 96.2810978100874,
+   "64000": 85.04505873969971,
+   "128000": 67.12987724667094
+  },
+  "followup_ttft_s": {
+   "4000": 0.5999601249932311,
+   "16000": 0.7035808750079013,
+   "32000": 0.743091624986846,
+   "64000": 1.0568698330025654,
+   "128000": 1.5219979590037838
+  },
+  "cache_saving": {
+   "4000": 66.60648836363075,
+   "16000": 229.50520648839938,
+   "32000": 457.34419152418616,
+   "64000": 727.3349746232473,
+   "128000": 1282.1281241962215
+  },
+  "writing_at_depth_tps": {
+   "4000": 22.337480488984916,
+   "16000": 18.992311089475162,
+   "32000": 17.489852275774044,
+   "64000": 12.714293525460276,
+   "128000": 9.069589987315085
+  },
+  "agent_step_s": {
+   "4000": 46.198640125017846,
+   "16000": 52.33501370801241,
+   "32000": 55.64908924998599,
+   "64000": 68.43978583399439,
+   "128000": 109.76576216699323
+  },
+  "recall": {
+   "4000": 3,
+   "16000": 3,
+   "32000": 3,
+   "64000": 3,
+   "128000": 3
+  },
+  "window": {
+   "declared": null,
+   "source": null,
+   "tested_to": 128000,
+   "skipped": [],
+   "past_window": null
+  },
+  "tools": "10/10",
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.454
+  },
+  "memory_peak_bytes": 64676510528,
+  "session": {
+   "total_s": 1004.539695667947,
+   "median_step_s": 107.41229456299334,
+   "first_step_s": 91.70967779197963,
+   "last_step_s": 135.90102145800483,
+   "start_tokens": 13058,
+   "end_tokens": 79671,
+   "valid_calls": 9,
+   "replies": 9
+  },
+  "compaction": {
+   "depth_tokens": 79671,
+   "total_s": 211.77457137501915,
+   "summary_tokens": 1415,
+   "write_tps": 12.34419472305971
+  },
+  "cold_compaction_min": {
+   "depth_tokens": 79671,
+   "prefill_tps": 85.04505873969971,
+   "from_rung": 64000,
+   "minutes": 15.6
+  },
+  "projected_task_min": {
+   "at": 16000,
+   "turns": 12,
+   "minutes": 13.2
+  }
+ },
+ "result_file": "deep-ollama-27b-mlx.json"
+}
