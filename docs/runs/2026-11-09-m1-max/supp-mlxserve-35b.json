@@ -1,0 +1,280 @@
+{
+ "benchcode": "0.3.0",
+ "date": "2026-11-09T22:25:12",
+ "server_url": "http://127.0.0.1:11234",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "!",
+   "label": "Machine busy",
+   "value": "1 process",
+   "note": "over 20% CPU: signpost_reporter 66%; measuring anyway, numbers may be low"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "5.27 s",
+   "note": "a 1K-token prompt and a short answer; then 1.85 s: 2.9x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off",
+   "note": "off by default; the switch turns it on; 100% of output is reasoning when on"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "7.58 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u00b7",
+   "label": "Default thinking",
+   "value": "same as above",
+   "note": "the server does not reason unless asked; the rows above are its default"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "20.9 GB peak",
+   "note": "idle 27 MB before the first request; includes every conversation the server still keeps"
+  }
+ ],
+ "flags": [
+  "contention: signpost_reporter 66% ran during the benchmark"
+ ],
+ "invalid": [],
+ "depth": {},
+ "once": {
+  "quiet": {
+   "signpost_reporter": 66
+  },
+  "first_request": {
+   "totals_s": [
+    5.275,
+    1.837,
+    1.864
+   ],
+   "penalty": 2.85
+  },
+  "thinking": {
+   "on_by_default": false,
+   "switch": "both",
+   "switch_works": null,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 1.0
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 3.2834,
+    "total_s": 6.145,
+    "prompt_tokens": 2926,
+    "cached_tokens": 0,
+    "completion_tokens": 256,
+    "reasoning_tokens": null,
+    "finish": "length",
+    "tool_calls": [],
+    "content_chars": 1194,
+    "reasoning_chars": 0,
+    "events": 256,
+    "timings": {
+     "prompt_n": 2926,
+     "cached_n": 0,
+     "prompt_ms": 3275.26,
+     "prompt_per_second": 893.364,
+     "predicted_n": 256,
+     "predicted_ms": 2826.813,
+     "predicted_per_second": 90.561,
+     "tokenize_ms": 3.32
+    }
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 1.4346,
+    "total_s": 1.435,
+    "prompt_tokens": 738,
+    "cached_tokens": 0,
+    "completion_tokens": 26,
+    "reasoning_tokens": null,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 1,
+    "timings": {
+     "prompt_n": 738,
+     "cached_n": 0,
+     "prompt_ms": 1172.022,
+     "prompt_per_second": 629.681,
+     "predicted_n": 26,
+     "predicted_ms": 258.843,
+     "predicted_per_second": 100.447,
+     "tokenize_ms": 1.589
+    }
+   }
+  },
+  "default_thinking": {
+   "skipped": "off by default"
+  },
+  "memory": {
+   "idle_bytes": 28475944,
+   "peak_bytes": 22487038952,
+   "end_bytes": 21455502312,
+   "mapped_bytes": 4833280,
+   "swap_growth_bytes": 103683194
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "mlx-serve",
+  "pid": 96041
+ },
+ "model": "ddalcu/Qwen3.6-35B-A3B-MLX-Serve-4bit",
+ "model_entry": {
+  "id": "ddalcu/Qwen3.6-35B-A3B-MLX-Serve-4bit",
+  "object": "model",
+  "created": 0,
+  "owned_by": "mlx-serve",
+  "loaded": false,
+  "state": "unloaded",
+  "bytes_resident": 0,
+  "bytes_on_disk": 20402204271,
+  "context_length": 262144,
+  "max_model_len": 262144,
+  "capabilities": [
+   "chat",
+   "tool_use",
+   "streaming",
+   "json_schema"
+  ],
+  "input_modalities": [
+   "text"
+  ],
+  "agent_budget": {
+   "context": 262144,
+   "output": 65536,
+   "compaction_reserve": 20000,
+   "too_small_for": {}
+  },
+  "engines": [
+   "mlx"
+  ],
+  "meta": {
+   "architecture": "qwen3_5_moe",
+   "engine": "mlx",
+   "vocab_size": 248320,
+   "hidden_size": 2048,
+   "num_layers": 40,
+   "quantization": "4-bit",
+   "context_length": 262144,
+   "model_max_tokens": 262144,
+   "is_moe": true,
+   "mtp_available": true,
+   "bytes_on_disk": 20402204271
+  }
+ },
+ "window_declared": 262144,
+ "window_source": "context_length",
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 759169024,
+  "loadavg": "{ 1.34 1.75 1.87 }",
+  "busy_processes": []
+ },
+ "memory_idle_bytes": 28475944,
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 862852218,
+  "loadavg": "{ 1.62 1.77 1.87 }",
+  "busy_processes": []
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": [
+   "context_length"
+  ]
+ },
+ "elapsed_s": 27.4,
+ "summary": {
+  "writing_tps": null,
+  "writing_greedy_tps": null,
+  "reading_tps": {},
+  "followup_ttft_s": {},
+  "cache_saving": {},
+  "writing_at_depth_tps": {},
+  "agent_step_s": {},
+  "recall": {},
+  "window": null,
+  "tools": "None/None",
+  "thinking": {
+   "on_by_default": false,
+   "switch": "both",
+   "switch_works": null,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 1.0
+  },
+  "memory_peak_bytes": 22487038952,
+  "session": null,
+  "compaction": null,
+  "default_thinking": {
+   "session": null,
+   "compaction": null,
+   "tools": null,
+   "skipped": "off by default"
+  }
+ },
+ "result_file": "supp-mlxserve-35b.json"
+}

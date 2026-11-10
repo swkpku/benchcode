@@ -1,0 +1,31 @@
+
+   benchcode 0.3.0  ·  http://127.0.0.1:8000  ·  served by kapitsa
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  qwen3.8-flash-next:64gb  ·  EXL3 2-bit routed experts (Sushi's MCG trellis), 8-bit affi… (as /v1/models declares it)
+
+  ! Machine busy         3 processes      over 20% CPU: WindowServer 32%, Google Chrome Helper (Aperitif) 31%, Google Chrome 30%; measuring anyway, numbers may be low
+  ✓ First request        6.12 s           a 1K-token prompt and a short answer; then 5.69 s: 1.1x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 57% of output is reasoning at the server's default
+  ✓ Warmed up            25.9 s           a 2.9K-token prompt and a tool call
+  ── default thinking ────────────────────────────────────────────
+  ✓ Tool calls, default  10/10 valid      no thinking switch sent; 3.01 s a call (median); 24 reasoning tokens a call (median)
+  ✓ Session, default     8.0 min          no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 52.8 s
+  ✓ Step, default        54.2 s           median; first 39.4 s, last 73.9 s; 69 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls
+  ✓ Compaction, default  219 s            at 80K where the session ended: a 3,296-token summary written at 20.8 tok/s after 1.33 s and 1,241 reasoning tokens (100% of the conversation cached); next turn 64.2 s (0 of 16,422 tokens cached)
+  ✓ Memory               41.2 GB peak     idle 34.9 GB before the first request; 10.0 GB mapped files; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  qwen3.8-flash-next:64gb  ·  EXL3 2-bit routed experts (S…  ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Default    thinking as served, no switch sent:                          │
+  │             54.2 s a step  ·  8.0 min  ·  69 reasoning tokens a step  · …│
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     41.2 GB peak + 10.0 GB mapped  ·  idle 34.9 GB               │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             busy: WindowServer 32%, Google Chrome He 31%  ·  elapsed 14.…│
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ! contention: WindowServer 32%, Google Chrome Helper (Aperitif) 31%, Google Chrome 30% ran during the benchmark
+  › Saved results/supp-kapitsa-flash-next.json
+exit 0

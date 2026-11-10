@@ -1,0 +1,528 @@
+{
+ "benchcode": "0.3.0",
+ "date": "2026-11-09T21:02:33",
+ "server_url": "http://127.0.0.1:8000",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "!",
+   "label": "Machine busy",
+   "value": "3 processes",
+   "note": "over 20% CPU: Google Chrome Helper (Aperitif Renderer) 68%, Google Chrome Helper (Aperitif) 51%, WindowServer 28%; measuring anyway, numbers may be low"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "10.1 s",
+   "note": "a 1K-token prompt and a short answer; then 9.24 s: 1.1x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off by switch",
+   "note": "on by default; enable_thinking=false / reasoning_effort=none turns it off; 59% of output is reasoning at the server's default"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "33.6 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Tool calls, default",
+   "value": "10/10 valid",
+   "note": "no thinking switch sent; 1.53 s a call (median); 28 reasoning tokens a call (median)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Session, default",
+   "value": "15.7 min",
+   "note": "no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 108 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Step, default",
+   "value": "101 s",
+   "note": "median; first 81.4 s, last 135 s; 69 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls"
+  },
+  {
+   "mark": "!",
+   "label": "Compaction, default",
+   "value": "no summary",
+   "note": "empty reply (finish_reason=length)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "27.4 GB peak",
+   "note": "idle 17.1 GB before the first request; includes every conversation the server still keeps"
+  }
+ ],
+ "flags": [
+  "contention: Google Chrome Helper (Aperitif Renderer) 68%, Google Chrome Helper (Aperitif) 51%, WindowServer 28% ran during the benchmark",
+  "compaction, default: the model did not produce a summary"
+ ],
+ "invalid": [],
+ "depth": {},
+ "once": {
+  "quiet": {
+   "Google Chrome Helper (Aperitif Renderer)": 68,
+   "WindowServer": 28,
+   "Google Chrome Helper (Aperitif)": 51
+  },
+  "first_request": {
+   "totals_s": [
+    10.054,
+    9.151,
+    9.32
+   ],
+   "penalty": 1.09
+  },
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.594
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 21.5615,
+    "total_s": 27.754,
+    "prompt_tokens": 2925,
+    "cached_tokens": 0,
+    "completion_tokens": 256,
+    "reasoning_tokens": null,
+    "finish": "length",
+    "tool_calls": [],
+    "content_chars": 1035,
+    "reasoning_chars": 0,
+    "events": 248,
+    "timings": null
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 5.8289,
+    "total_s": 5.837,
+    "prompt_tokens": 738,
+    "cached_tokens": 0,
+    "completion_tokens": 27,
+    "reasoning_tokens": null,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 1,
+    "timings": null
+   }
+  },
+  "default_thinking": {
+   "switch_sent": null,
+   "reply_cap": 4096
+  },
+  "tools_default": {
+   "trials": [
+    {
+     "i": 0,
+     "ok": true,
+     "why": "",
+     "total_s": 6.215701415989315,
+     "reasoning_tokens": 15,
+     "completion_tokens": 43,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 1,
+     "ok": true,
+     "why": "",
+     "total_s": 1.3595095420023426,
+     "reasoning_tokens": 28,
+     "completion_tokens": 70,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 2,
+     "ok": true,
+     "why": "",
+     "total_s": 1.5286379590106662,
+     "reasoning_tokens": 30,
+     "completion_tokens": 81,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 3,
+     "ok": true,
+     "why": "",
+     "total_s": 1.5375020419887733,
+     "reasoning_tokens": 44,
+     "completion_tokens": 74,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 4,
+     "ok": true,
+     "why": "",
+     "total_s": 1.1967288329906296,
+     "reasoning_tokens": 23,
+     "completion_tokens": 63,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 5,
+     "ok": true,
+     "why": "",
+     "total_s": 1.1030165420088451,
+     "reasoning_tokens": 25,
+     "completion_tokens": 63,
+     "finish": "tool_calls",
+     "tool": "grep"
+    },
+    {
+     "i": 6,
+     "ok": true,
+     "why": "",
+     "total_s": 3.0555436249997,
+     "reasoning_tokens": 79,
+     "completion_tokens": 151,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 7,
+     "ok": true,
+     "why": "",
+     "total_s": 1.9213811669906136,
+     "reasoning_tokens": 49,
+     "completion_tokens": 102,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 8,
+     "ok": true,
+     "why": "",
+     "total_s": 1.2548255829897244,
+     "reasoning_tokens": 27,
+     "completion_tokens": 72,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 9,
+     "ok": true,
+     "why": "",
+     "total_s": 1.7841780000017025,
+     "reasoning_tokens": 28,
+     "completion_tokens": 86,
+     "finish": "tool_calls",
+     "tool": "write"
+    }
+   ],
+   "passed": 10,
+   "total": 10,
+   "median_s": 1.5330700004997198,
+   "median_reasoning_tokens": 28.0,
+   "cut": 0
+  },
+  "session_default": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [
+    {
+     "total_s": 81.42732254197472,
+     "ttft_s": 75.1225798749947,
+     "prompt_tokens": 21707,
+     "cached_tokens": 13099,
+     "new_tokens": 8608,
+     "cache_share": 0.9996184371184371,
+     "problem": null,
+     "reasoning_tokens": 167,
+     "completion_tokens": 200,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 89.42715454200516,
+     "ttft_s": 86.9232501249935,
+     "prompt_tokens": 30389,
+     "cached_tokens": 21702,
+     "new_tokens": 8687,
+     "cache_share": 0.999769659556825,
+     "problem": null,
+     "reasoning_tokens": 29,
+     "completion_tokens": 77,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 87.57353854199755,
+     "ttft_s": 82.48853166698245,
+     "prompt_tokens": 37993,
+     "cached_tokens": 30384,
+     "new_tokens": 7609,
+     "cache_share": 0.9998354667807431,
+     "problem": null,
+     "reasoning_tokens": 109,
+     "completion_tokens": 172,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 100.28900483300094,
+     "ttft_s": 97.44975183301722,
+     "prompt_tokens": 46475,
+     "cached_tokens": 37988,
+     "new_tokens": 8487,
+     "cache_share": 0.9998683968099387,
+     "problem": null,
+     "reasoning_tokens": 37,
+     "completion_tokens": 74,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 101.22393300000113,
+     "ttft_s": 98.40719087500474,
+     "prompt_tokens": 54652,
+     "cached_tokens": 46470,
+     "new_tokens": 8182,
+     "cache_share": 0.9998924152770307,
+     "problem": null,
+     "reasoning_tokens": 25,
+     "completion_tokens": 82,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 114.25206354199327,
+     "ttft_s": 108.98877662498853,
+     "prompt_tokens": 62645,
+     "cached_tokens": 54647,
+     "new_tokens": 7998,
+     "cache_share": 0.9999085120398156,
+     "problem": null,
+     "reasoning_tokens": 64,
+     "completion_tokens": 118,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 128.20445466702222,
+     "ttft_s": 122.19926741701784,
+     "prompt_tokens": 71281,
+     "cached_tokens": 62640,
+     "new_tokens": 8641,
+     "cache_share": 0.9999201851704047,
+     "problem": null,
+     "reasoning_tokens": 74,
+     "completion_tokens": 133,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 134.61021837498993,
+     "ttft_s": 125.09832916600863,
+     "prompt_tokens": 79779,
+     "cached_tokens": 71276,
+     "new_tokens": 8503,
+     "cache_share": 0.9999298550805965,
+     "problem": null,
+     "reasoning_tokens": 131,
+     "completion_tokens": 191,
+     "finish": "tool_calls"
+    }
+   ],
+   "stopped": null,
+   "thinking": "default",
+   "start": {
+    "total_s": 107.5594443329901,
+    "ttft_s": 103.42183395798202,
+    "prompt_tokens": 13104,
+    "valid_call": true,
+    "reasoning_tokens": 96,
+    "finish": "tool_calls"
+   },
+   "total_s": 944.567134375975,
+   "median_step_s": 100.75646891650103,
+   "first_step_s": 81.42732254197472,
+   "last_step_s": 134.61021837498993,
+   "start_tokens": 13104,
+   "end_tokens": 79779,
+   "valid_calls": 9,
+   "replies": 9,
+   "median_cache_share": 0.9998804060434847,
+   "median_reasoning_tokens": 69.0,
+   "steps_cut": 0
+  },
+  "compaction_default": {
+   "depth_tokens": 79779,
+   "thinking": "default",
+   "total_s": 260.2320283750014,
+   "ttft_s": 2.293011542002205,
+   "summary_tokens": 0,
+   "summary_chars": 0,
+   "write_tps": 23.788798343890605,
+   "cached_tokens": 79774,
+   "prompt_tokens": 79879,
+   "finish": "length",
+   "called_tool": false,
+   "reasoning_tokens": 6144
+  },
+  "memory": {
+   "idle_bytes": 18396379224,
+   "peak_bytes": 29412998072,
+   "end_bytes": 29172153272,
+   "mapped_bytes": 9961472,
+   "swap_growth_bytes": -25165824
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "kapitsa",
+  "pid": 89053
+ },
+ "model": "qwen3.8-27b",
+ "model_entry": {
+  "id": "qwen3.8-27b",
+  "object": "model",
+  "type": "model",
+  "display_name": "qwen3.8-27b:4bit",
+  "created": 1794286947,
+  "created_at": "2026-11-10T05:02:27Z",
+  "owned_by": "nace",
+  "context_length": 262144,
+  "context_fit": 262144,
+  "slots": 4,
+  "active": true,
+  "downloaded": true,
+  "quant": "MLX affine 4-bit, group 64"
+ },
+ "window_declared": 262144,
+ "window_source": "context_fit",
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 552861696,
+  "loadavg": "{ 2.02 1.93 1.30 }",
+  "busy_processes": [
+   "WindowServer 30%",
+   "Google Chrome Helper (Aperitif Renderer) 21%"
+  ]
+ },
+ "memory_idle_bytes": 18396379224,
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "fair",
+  "swap_used_bytes": 527695872,
+  "loadavg": "{ 1.68 1.76 1.58 }",
+  "busy_processes": [
+   "Google Chrome Helper (Aperitif Renderer) 58%",
+   "Google Chrome Helper (Aperitif) 40%",
+   "WindowServer 33%"
+  ]
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": [
+   "active",
+   "context_fit"
+  ]
+ },
+ "elapsed_s": 1301.0,
+ "summary": {
+  "writing_tps": null,
+  "writing_greedy_tps": null,
+  "reading_tps": {},
+  "followup_ttft_s": {},
+  "cache_saving": {},
+  "writing_at_depth_tps": {},
+  "agent_step_s": {},
+  "recall": {},
+  "window": null,
+  "tools": "None/None",
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.594
+  },
+  "memory_peak_bytes": 29412998072,
+  "session": null,
+  "compaction": null,
+  "default_thinking": {
+   "session": {
+    "total_s": 944.567134375975,
+    "median_step_s": 100.75646891650103,
+    "median_reasoning_tokens": 69.0,
+    "valid_calls": 9,
+    "replies": 9,
+    "steps_cut": 0
+   },
+   "compaction": {
+    "depth_tokens": 79779,
+    "total_s": 260.2320283750014,
+    "summary_tokens": 0,
+    "reasoning_tokens": 6144
+   },
+   "tools": {
+    "passed": 10,
+    "total": 10,
+    "median_s": 1.5330700004997198,
+    "median_reasoning_tokens": 28.0,
+    "cut": 0
+   },
+   "skipped": null
+  }
+ },
+ "result_file": "supp-kapitsa-27b.json"
+}

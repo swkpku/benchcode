@@ -1,0 +1,31 @@
+
+   benchcode 0.3.0  ·  http://127.0.0.1:11434  ·  served by ollama
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  qwen3.6:35b-mlx
+
+  ✓ Machine quiet        5 s              no other process over 20% CPU
+  ✓ First request        5.95 s           a 1K-token prompt and a short answer; then 1.99 s: 3.0x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 92% of output is reasoning at the server's default
+  ✓ Warmed up            9.15 s           a 2.9K-token prompt and a tool call
+  ── default thinking ────────────────────────────────────────────
+  ✓ Tool calls, default  10/10 valid      no thinking switch sent; 1.86 s a call (median); 128 reasoning tokens a call (median)
+  ✓ Session, default     4.2 min          no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 21.5 s
+  ✓ Step, default        24.8 s           median; first 17.3 s, last 62.3 s; 80 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls
+  ✓ Compaction, default  227 s            at 80K where the session ended: a 738-token summary written at 36.9 tok/s after 189 s and 628 reasoning tokens (16% of the conversation cached); next turn 12.2 s (8,191 of 13,794 tokens cached)
+  ✓ Memory               48.9 GB peak     idle 16 MB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  qwen3.6:35b-mlx                                            ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Default    thinking as served, no switch sent:                          │
+  │             24.8 s a step  ·  4.2 min  ·  80 reasoning tokens a step  · …│
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     48.9 GB peak  ·  idle 16 MB                                  │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             no other process over 20% CPU  ·  elapsed 9.2 min            │
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ! compaction, default: only 16% of the conversation was cached when the summary was requested
+  › Saved results/supp-ollama-35b-mlx.json
+exit 0

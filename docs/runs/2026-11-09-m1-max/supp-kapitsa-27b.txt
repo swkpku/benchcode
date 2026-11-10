@@ -1,0 +1,32 @@
+
+   benchcode 0.3.0  ·  http://127.0.0.1:8000  ·  served by kapitsa
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  qwen3.8-27b  ·  MLX affine 4-bit, group 64 (as /v1/models declares it)
+
+  ! Machine busy         3 processes      over 20% CPU: Google Chrome Helper (Aperitif Renderer) 68%, Google Chrome Helper (Aperitif) 51%, WindowServer 28%; measuring anyway, numbers may be low
+  ✓ First request        10.1 s           a 1K-token prompt and a short answer; then 9.24 s: 1.1x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 59% of output is reasoning at the server's default
+  ✓ Warmed up            33.6 s           a 2.9K-token prompt and a tool call
+  ── default thinking ────────────────────────────────────────────
+  ✓ Tool calls, default  10/10 valid      no thinking switch sent; 1.53 s a call (median); 28 reasoning tokens a call (median)
+  ✓ Session, default     15.7 min         no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 108 s
+  ✓ Step, default        101 s            median; first 81.4 s, last 135 s; 69 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls
+  ! Compaction, default  no summary       empty reply (finish_reason=length)
+  ✓ Memory               27.4 GB peak     idle 17.1 GB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  qwen3.8-27b  ·  MLX affine 4-bit, group 64                 ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Default    thinking as served, no switch sent:                          │
+  │             101 s a step  ·  15.7 min  ·  69 reasoning tokens a step  · …│
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     27.4 GB peak  ·  idle 17.1 GB                                │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             busy: Google Chrome He 68%, Google Chrome He 51%  ·  elapsed…│
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ! contention: Google Chrome Helper (Aperitif Renderer) 68%, Google Chrome Helper (Aperitif) 51%, WindowServer 28% ran during the benchmark
+  ! compaction, default: the model did not produce a summary
+  › Saved results/supp-kapitsa-27b.json
+exit 0

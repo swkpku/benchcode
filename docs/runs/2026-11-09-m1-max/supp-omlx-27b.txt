@@ -1,0 +1,31 @@
+
+   benchcode 0.3.0  ·  http://127.0.0.1:8000  ·  served by python3.11
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  Qwen3.8-27B-oQ4e-fp16-mtp
+
+  ! Machine busy         1 process        over 20% CPU: launchd 55%; measuring anyway, numbers may be low
+  ✓ First request        14.5 s           a 1K-token prompt and a short answer; then 8.67 s: 1.7x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 54% of output is reasoning at the server's default
+  ✓ Warmed up            33.1 s           a 2.9K-token prompt and a tool call
+  ── default thinking ────────────────────────────────────────────
+  ✓ Tool calls, default  10/10 valid      no thinking switch sent; 2.67 s a call (median); 28 reasoning tokens a call (median)
+  ✓ Session, default     13.6 min         no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 92.8 s
+  ✓ Step, default        90.1 s           median; first 69.9 s, last 118 s; 82 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls
+  ✓ Compaction, default  307 s            at 80K where the session ended: a 2,775-token summary written at 20.2 tok/s after 2.86 s and 3,369 reasoning tokens (100% of the conversation cached); cut at 6144 tokens; next turn 34.4 s (12,288 of 15,958 tokens cached)
+  ✓ Memory               37.0 GB peak     idle 197 MB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  Qwen3.8-27B-oQ4e-fp16-mtp                                  ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Default    thinking as served, no switch sent:                          │
+  │             90.1 s a step  ·  13.6 min  ·  82 reasoning tokens a step  ·…│
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     37.0 GB peak  ·  idle 197 MB                                 │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             busy: launchd 55%  ·  elapsed 21.2 min                       │
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ! contention: launchd 55% ran during the benchmark
+  › Saved results/supp-omlx-27b.json
+exit 0

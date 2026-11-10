@@ -1,0 +1,528 @@
+{
+ "benchcode": "0.3.0",
+ "date": "2026-11-09T21:26:25",
+ "server_url": "http://127.0.0.1:8000",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "!",
+   "label": "Machine busy",
+   "value": "1 process",
+   "note": "over 20% CPU: WindowServer 33%; measuring anyway, numbers may be low"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "1.39 s",
+   "note": "a 1K-token prompt and a short answer; then 1.25 s: 1.1x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off by switch",
+   "note": "on by default; enable_thinking=false / reasoning_effort=none turns it off; 91% of output is reasoning at the server's default"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "5.34 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Tool calls, default",
+   "value": "10/10 valid",
+   "note": "no thinking switch sent; 0.86 s a call (median); 66 reasoning tokens a call (median)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Session, default",
+   "value": "2.8 min",
+   "note": "no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 15.0 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Step, default",
+   "value": "19.4 s",
+   "note": "median; first 13.0 s, last 26.9 s; 24 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Compaction, default",
+   "value": "32.0 s",
+   "note": "at 80K where the session ended: a 1,538-token summary written at 69.7 tok/s after 0.63 s and 648 reasoning tokens (100% of the conversation cached); next turn 4.15 s (13,023 of 14,629 tokens cached)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "24.5 GB peak",
+   "note": "idle 20.4 GB before the first request; includes every conversation the server still keeps"
+  }
+ ],
+ "flags": [
+  "contention: WindowServer 33% ran during the benchmark"
+ ],
+ "invalid": [],
+ "depth": {},
+ "once": {
+  "quiet": {
+   "WindowServer": 33
+  },
+  "first_request": {
+   "totals_s": [
+    1.385,
+    1.236,
+    1.263
+   ],
+   "penalty": 1.11
+  },
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.91
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 2.7331,
+    "total_s": 4.26,
+    "prompt_tokens": 2927,
+    "cached_tokens": 0,
+    "completion_tokens": 186,
+    "reasoning_tokens": null,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 766,
+    "reasoning_chars": 0,
+    "events": 174,
+    "timings": null
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 1.0528,
+    "total_s": 1.083,
+    "prompt_tokens": 738,
+    "cached_tokens": 0,
+    "completion_tokens": 27,
+    "reasoning_tokens": null,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 1,
+    "timings": null
+   }
+  },
+  "default_thinking": {
+   "switch_sent": null,
+   "reply_cap": 4096
+  },
+  "tools_default": {
+   "trials": [
+    {
+     "i": 0,
+     "ok": true,
+     "why": "",
+     "total_s": 1.3981093330075964,
+     "reasoning_tokens": 70,
+     "completion_tokens": 98,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 1,
+     "ok": true,
+     "why": "",
+     "total_s": 0.8126976669882424,
+     "reasoning_tokens": 64,
+     "completion_tokens": 106,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 2,
+     "ok": true,
+     "why": "",
+     "total_s": 0.5726901250018273,
+     "reasoning_tokens": 36,
+     "completion_tokens": 69,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 3,
+     "ok": true,
+     "why": "",
+     "total_s": 0.9787128749885596,
+     "reasoning_tokens": 93,
+     "completion_tokens": 123,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 4,
+     "ok": true,
+     "why": "",
+     "total_s": 0.7320723329903558,
+     "reasoning_tokens": 45,
+     "completion_tokens": 74,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 5,
+     "ok": true,
+     "why": "",
+     "total_s": 0.8196969170239754,
+     "reasoning_tokens": 67,
+     "completion_tokens": 94,
+     "finish": "tool_calls",
+     "tool": "grep"
+    },
+    {
+     "i": 6,
+     "ok": true,
+     "why": "",
+     "total_s": 1.257602333003888,
+     "reasoning_tokens": 116,
+     "completion_tokens": 188,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 7,
+     "ok": true,
+     "why": "",
+     "total_s": 0.9304714580066502,
+     "reasoning_tokens": 59,
+     "completion_tokens": 112,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 8,
+     "ok": true,
+     "why": "",
+     "total_s": 0.7286830410012044,
+     "reasoning_tokens": 42,
+     "completion_tokens": 87,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 9,
+     "ok": true,
+     "why": "",
+     "total_s": 0.909524542017607,
+     "reasoning_tokens": 77,
+     "completion_tokens": 129,
+     "finish": "tool_calls",
+     "tool": "write"
+    }
+   ],
+   "passed": 10,
+   "total": 10,
+   "median_s": 0.8646107295207912,
+   "median_reasoning_tokens": 65.5,
+   "cut": 0
+  },
+  "session_default": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [
+    {
+     "total_s": 12.953645291010616,
+     "ttft_s": 11.490227500005858,
+     "prompt_tokens": 21672,
+     "cached_tokens": 13064,
+     "new_tokens": 8608,
+     "cache_share": 0.9996174152574795,
+     "problem": null,
+     "reasoning_tokens": 64,
+     "completion_tokens": 121,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 15.158760041987989,
+     "ttft_s": 13.85619312498602,
+     "prompt_tokens": 30354,
+     "cached_tokens": 21667,
+     "new_tokens": 8687,
+     "cache_share": 0.9997692875599853,
+     "problem": null,
+     "reasoning_tokens": 21,
+     "completion_tokens": 83,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 14.925456208002288,
+     "ttft_s": 13.78365120801027,
+     "prompt_tokens": 37958,
+     "cached_tokens": 30349,
+     "new_tokens": 7609,
+     "cache_share": 0.9998352770639783,
+     "problem": null,
+     "reasoning_tokens": 18,
+     "completion_tokens": 70,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 19.37651062500663,
+     "ttft_s": 17.726005375006935,
+     "prompt_tokens": 46440,
+     "cached_tokens": 37953,
+     "new_tokens": 8487,
+     "cache_share": 0.9998682754623531,
+     "problem": null,
+     "reasoning_tokens": 67,
+     "completion_tokens": 100,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 19.36085245900904,
+     "ttft_s": 18.311456291994546,
+     "prompt_tokens": 54617,
+     "cached_tokens": 46435,
+     "new_tokens": 8182,
+     "cache_share": 0.9998923341946597,
+     "problem": null,
+     "reasoning_tokens": 20,
+     "completion_tokens": 53,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 21.200266625004588,
+     "ttft_s": 20.02314412497799,
+     "prompt_tokens": 62610,
+     "cached_tokens": 54612,
+     "new_tokens": 7998,
+     "cache_share": 0.9999084534119413,
+     "problem": null,
+     "reasoning_tokens": 26,
+     "completion_tokens": 58,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 25.834164542000508,
+     "ttft_s": 24.363013416994363,
+     "prompt_tokens": 71246,
+     "cached_tokens": 62605,
+     "new_tokens": 8641,
+     "cache_share": 0.9999201405526273,
+     "problem": null,
+     "reasoning_tokens": 50,
+     "completion_tokens": 83,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 26.8650321669993,
+     "ttft_s": 25.642543791997014,
+     "prompt_tokens": 79744,
+     "cached_tokens": 71241,
+     "new_tokens": 8503,
+     "cache_share": 0.9999298206215086,
+     "problem": null,
+     "reasoning_tokens": 17,
+     "completion_tokens": 47,
+     "finish": "tool_calls"
+    }
+   ],
+   "stopped": null,
+   "thinking": "default",
+   "start": {
+    "total_s": 14.986810083006276,
+    "ttft_s": 13.585445792006794,
+    "prompt_tokens": 13069,
+    "valid_call": true,
+    "reasoning_tokens": 66,
+    "finish": "tool_calls"
+   },
+   "total_s": 170.66149804202723,
+   "median_step_s": 19.368681542007835,
+   "first_step_s": 12.953645291010616,
+   "last_step_s": 26.8650321669993,
+   "start_tokens": 13069,
+   "end_tokens": 79744,
+   "valid_calls": 9,
+   "replies": 9,
+   "median_cache_share": 0.9998803048285064,
+   "median_reasoning_tokens": 23.5,
+   "steps_cut": 0
+  },
+  "compaction_default": {
+   "depth_tokens": 79744,
+   "thinking": "default",
+   "total_s": 31.97953545799828,
+   "ttft_s": 0.6322864579851739,
+   "summary_tokens": 1538,
+   "summary_chars": 6110,
+   "write_tps": 69.7318002004585,
+   "cached_tokens": 79739,
+   "prompt_tokens": 79844,
+   "finish": "stop",
+   "called_tool": false,
+   "reasoning_tokens": 648,
+   "next_turn": {
+    "total_s": 4.150129375018878,
+    "ttft_s": 1.966496167005971,
+    "prompt_tokens": 14629,
+    "cached_tokens": 13023,
+    "problem": null,
+    "reasoning_tokens": 127
+   }
+  },
+  "memory": {
+   "idle_bytes": 21851046088,
+   "peak_bytes": 26356220680,
+   "end_bytes": 26326991624,
+   "mapped_bytes": 10043392,
+   "swap_growth_bytes": 0
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "kapitsa",
+  "pid": 89656
+ },
+ "model": "qwen3.6-35b-a3b",
+ "model_entry": {
+  "id": "qwen3.6-35b-a3b",
+  "object": "model",
+  "type": "model",
+  "display_name": "qwen3.6-35b-a3b:4bit",
+  "created": 1794288379,
+  "created_at": "2026-11-10T05:26:19Z",
+  "owned_by": "nace",
+  "context_length": 262144,
+  "context_fit": 262144,
+  "slots": 4,
+  "active": true,
+  "downloaded": true,
+  "quant": "MLX affine 4-bit, group 64"
+ },
+ "window_declared": 262144,
+ "window_source": "context_fit",
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 527695872,
+  "loadavg": "{ 2.13 1.95 1.69 }",
+  "busy_processes": []
+ },
+ "memory_idle_bytes": 21851046088,
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "fair",
+  "swap_used_bytes": 527695872,
+  "loadavg": "{ 0.82 1.49 1.56 }",
+  "busy_processes": [
+   "Google Chrome 21%"
+  ]
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": [
+   "active",
+   "context_fit"
+  ]
+ },
+ "elapsed_s": 237.1,
+ "summary": {
+  "writing_tps": null,
+  "writing_greedy_tps": null,
+  "reading_tps": {},
+  "followup_ttft_s": {},
+  "cache_saving": {},
+  "writing_at_depth_tps": {},
+  "agent_step_s": {},
+  "recall": {},
+  "window": null,
+  "tools": "None/None",
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.91
+  },
+  "memory_peak_bytes": 26356220680,
+  "session": null,
+  "compaction": null,
+  "default_thinking": {
+   "session": {
+    "total_s": 170.66149804202723,
+    "median_step_s": 19.368681542007835,
+    "median_reasoning_tokens": 23.5,
+    "valid_calls": 9,
+    "replies": 9,
+    "steps_cut": 0
+   },
+   "compaction": {
+    "depth_tokens": 79744,
+    "total_s": 31.97953545799828,
+    "summary_tokens": 1538,
+    "reasoning_tokens": 648
+   },
+   "tools": {
+    "passed": 10,
+    "total": 10,
+    "median_s": 0.8646107295207912,
+    "median_reasoning_tokens": 65.5,
+    "cut": 0
+   },
+   "skipped": null
+  }
+ },
+ "result_file": "supp-kapitsa-35b.json"
+}

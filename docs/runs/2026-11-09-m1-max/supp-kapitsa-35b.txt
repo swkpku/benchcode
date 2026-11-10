@@ -1,0 +1,31 @@
+
+   benchcode 0.3.0  ·  http://127.0.0.1:8000  ·  served by kapitsa
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  qwen3.6-35b-a3b  ·  MLX affine 4-bit, group 64 (as /v1/models declares it)
+
+  ! Machine busy         1 process        over 20% CPU: WindowServer 33%; measuring anyway, numbers may be low
+  ✓ First request        1.39 s           a 1K-token prompt and a short answer; then 1.25 s: 1.1x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 91% of output is reasoning at the server's default
+  ✓ Warmed up            5.34 s           a 2.9K-token prompt and a tool call
+  ── default thinking ────────────────────────────────────────────
+  ✓ Tool calls, default  10/10 valid      no thinking switch sent; 0.86 s a call (median); 66 reasoning tokens a call (median)
+  ✓ Session, default     2.8 min          no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 15.0 s
+  ✓ Step, default        19.4 s           median; first 13.0 s, last 26.9 s; 24 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls
+  ✓ Compaction, default  32.0 s           at 80K where the session ended: a 1,538-token summary written at 69.7 tok/s after 0.63 s and 648 reasoning tokens (100% of the conversation cached); next turn 4.15 s (13,023 of 14,629 tokens cached)
+  ✓ Memory               24.5 GB peak     idle 20.4 GB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  qwen3.6-35b-a3b  ·  MLX affine 4-bit, group 64             ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Default    thinking as served, no switch sent:                          │
+  │             19.4 s a step  ·  2.8 min  ·  24 reasoning tokens a step  · …│
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     24.5 GB peak  ·  idle 20.4 GB                                │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             busy: WindowServer 33%  ·  elapsed 4.0 min                   │
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ! contention: WindowServer 33% ran during the benchmark
+  › Saved results/supp-kapitsa-35b.json
+exit 0

@@ -152,10 +152,36 @@ What the run showed:
 - Ollama 27B is INVALID under the protocol: at 128K the answer contained a `</think>` tag with
   thinking off. Its rows to 64K measured normally.
 - mlx-serve's server default is thinking off, where the other three follow the model template
-  and think at the highest effort.
+  and think at the highest effort. The next table shows what that costs.
 
 One run per pair. Each configuration was its default. These are measurements of one machine on one
 day, not a ranking.
+
+### The same session with thinking left on
+
+A second pass sent no thinking switch, which is what most harnesses do. Same 12K system prompt,
+same eight steps, same compaction request. Full table in
+[`default-thinking.md`](docs/runs/2026-11-09-m1-max/default-thinking.md).
+
+| | Kapitsa 27B | Kapitsa 35B | Kapitsa Flash | oMLX 27B | oMLX 35B | mlx-serve 27B | mlx-serve 35B | Ollama 27B | Ollama 35B |
+|---|---|---|---|---|---|---|---|---|---|
+| Reasoning share of a plain answer | 59% | 91% | 57% | 54% | 89% | off by default | off by default | 63% | 92% |
+| Session step, thinking off, s | 86.3 | 18.7 | 45.4 | 80.9 | 24.6 | 121 | 33.2 | 107 | 23.2 |
+| Session step, default, s | 101 | 19.4 | 54.2 | 90.1 | 25.8 | same | same | 112 | 24.8 |
+| Reasoning tokens a step, median | 69 | 24 | 69 | 82 | 30 | – | – | 106 | 81 |
+| Well-formed replies | 9/9 | 9/9 | 9/9 | 9/9 | 7/9 | – | – | 9/9 | 9/9 |
+| Compaction, thinking off, s | 75 | 21 | 98 | 97 | 197 | 272 | 295 | 212 | 49 |
+| Compaction, default, s | no summary | 32 | 219 | 307 | 59 | same | same | 227 | 227 |
+| Reasoning tokens in the summary request | 6,144 | 648 | 1,241 | 3,369 | 758 | – | – | 726 | 628 |
+
+- **Tool-call steps barely slow down.** With a tool list in front of them, these models reason for
+  24 to 106 tokens before calling, so a session step costs 4 to 20 percent more than with thinking
+  off, not the doubling the plain-answer reasoning share suggests.
+- **Compaction is where thinking bites.** Asked to summarise an 80K conversation, the models reason
+  at length first. Kapitsa's 27B spent its whole 6,144-token cap reasoning and returned no summary;
+  oMLX's 27B reasoned for 3,369 tokens and was cut. The 35B-A3B models summarised in 32 to 59 s.
+- **mlx-serve turns thinking off by itself** when no switch is sent, so its default rows equal its
+  thinking-off rows.
 
 ## Method
 

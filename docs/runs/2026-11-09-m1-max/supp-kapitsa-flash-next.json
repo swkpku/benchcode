@@ -1,0 +1,530 @@
+{
+ "benchcode": "0.3.0",
+ "date": "2026-11-09T21:32:33",
+ "server_url": "http://127.0.0.1:8000",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "!",
+   "label": "Machine busy",
+   "value": "3 processes",
+   "note": "over 20% CPU: WindowServer 32%, Google Chrome Helper (Aperitif) 31%, Google Chrome 30%; measuring anyway, numbers may be low"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "6.12 s",
+   "note": "a 1K-token prompt and a short answer; then 5.69 s: 1.1x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off by switch",
+   "note": "on by default; enable_thinking=false / reasoning_effort=none turns it off; 57% of output is reasoning at the server's default"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "25.9 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Tool calls, default",
+   "value": "10/10 valid",
+   "note": "no thinking switch sent; 3.01 s a call (median); 24 reasoning tokens a call (median)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Session, default",
+   "value": "8.0 min",
+   "note": "no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 52.8 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Step, default",
+   "value": "54.2 s",
+   "note": "median; first 39.4 s, last 73.9 s; 69 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Compaction, default",
+   "value": "219 s",
+   "note": "at 80K where the session ended: a 3,296-token summary written at 20.8 tok/s after 1.33 s and 1,241 reasoning tokens (100% of the conversation cached); next turn 64.2 s (0 of 16,422 tokens cached)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "41.2 GB peak",
+   "note": "idle 34.9 GB before the first request; 10.0 GB mapped files; includes every conversation the server still keeps"
+  }
+ ],
+ "flags": [
+  "contention: WindowServer 32%, Google Chrome Helper (Aperitif) 31%, Google Chrome 30% ran during the benchmark"
+ ],
+ "invalid": [],
+ "depth": {},
+ "once": {
+  "quiet": {
+   "Google Chrome Helper (Aperitif)": 31,
+   "WindowServer": 32,
+   "Google Chrome": 30
+  },
+  "first_request": {
+   "totals_s": [
+    6.124,
+    5.731,
+    5.653
+   ],
+   "penalty": 1.08
+  },
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.573
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 10.6443,
+    "total_s": 21.514,
+    "prompt_tokens": 2922,
+    "cached_tokens": 0,
+    "completion_tokens": 256,
+    "reasoning_tokens": null,
+    "finish": "length",
+    "tool_calls": [],
+    "content_chars": 1162,
+    "reasoning_chars": 0,
+    "events": 230,
+    "timings": null
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 4.2541,
+    "total_s": 4.347,
+    "prompt_tokens": 738,
+    "cached_tokens": 0,
+    "completion_tokens": 27,
+    "reasoning_tokens": null,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 1,
+    "timings": null
+   }
+  },
+  "default_thinking": {
+   "switch_sent": null,
+   "reply_cap": 4096
+  },
+  "tools_default": {
+   "trials": [
+    {
+     "i": 0,
+     "ok": true,
+     "why": "",
+     "total_s": 5.31260858301539,
+     "reasoning_tokens": 24,
+     "completion_tokens": 52,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 1,
+     "ok": true,
+     "why": "",
+     "total_s": 4.320095957984449,
+     "reasoning_tokens": 68,
+     "completion_tokens": 110,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 2,
+     "ok": true,
+     "why": "",
+     "total_s": 2.5708734999934677,
+     "reasoning_tokens": 25,
+     "completion_tokens": 71,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 3,
+     "ok": true,
+     "why": "",
+     "total_s": 1.990566584019689,
+     "reasoning_tokens": 21,
+     "completion_tokens": 51,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 4,
+     "ok": true,
+     "why": "",
+     "total_s": 2.01940824999474,
+     "reasoning_tokens": 23,
+     "completion_tokens": 52,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 5,
+     "ok": true,
+     "why": "",
+     "total_s": 1.7389075829996727,
+     "reasoning_tokens": 21,
+     "completion_tokens": 48,
+     "finish": "tool_calls",
+     "tool": "grep"
+    },
+    {
+     "i": 6,
+     "ok": true,
+     "why": "",
+     "total_s": 7.95322775002569,
+     "reasoning_tokens": 128,
+     "completion_tokens": 174,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 7,
+     "ok": true,
+     "why": "",
+     "total_s": 3.4188579999899957,
+     "reasoning_tokens": 47,
+     "completion_tokens": 100,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 8,
+     "ok": true,
+     "why": "",
+     "total_s": 2.6100697910005692,
+     "reasoning_tokens": 24,
+     "completion_tokens": 69,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 9,
+     "ok": true,
+     "why": "",
+     "total_s": 3.9546057079860475,
+     "reasoning_tokens": 44,
+     "completion_tokens": 102,
+     "finish": "tool_calls",
+     "tool": "write"
+    }
+   ],
+   "passed": 10,
+   "total": 10,
+   "median_s": 3.0144638954952825,
+   "median_reasoning_tokens": 24.5,
+   "cut": 0
+  },
+  "session_default": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [
+    {
+     "total_s": 39.4257384170196,
+     "ttft_s": 36.255187542003114,
+     "prompt_tokens": 21707,
+     "cached_tokens": 13099,
+     "new_tokens": 8608,
+     "cache_share": 0.9996184371184371,
+     "problem": null,
+     "reasoning_tokens": 49,
+     "completion_tokens": 78,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 43.60552033301792,
+     "ttft_s": 40.42457541602198,
+     "prompt_tokens": 30389,
+     "cached_tokens": 21702,
+     "new_tokens": 8687,
+     "cache_share": 0.999769659556825,
+     "problem": null,
+     "reasoning_tokens": 39,
+     "completion_tokens": 87,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 40.19846604199847,
+     "ttft_s": 37.24685387502541,
+     "prompt_tokens": 37993,
+     "cached_tokens": 30384,
+     "new_tokens": 7609,
+     "cache_share": 0.9998354667807431,
+     "problem": null,
+     "reasoning_tokens": 33,
+     "completion_tokens": 67,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 56.53594899998279,
+     "ttft_s": 48.148615416983375,
+     "prompt_tokens": 46475,
+     "cached_tokens": 37988,
+     "new_tokens": 8487,
+     "cache_share": 0.9998683968099387,
+     "problem": null,
+     "reasoning_tokens": 109,
+     "completion_tokens": 170,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 52.439591834001476,
+     "ttft_s": 48.49393545900239,
+     "prompt_tokens": 54652,
+     "cached_tokens": 46470,
+     "new_tokens": 8182,
+     "cache_share": 0.9998924152770307,
+     "problem": null,
+     "reasoning_tokens": 51,
+     "completion_tokens": 96,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 56.04993083400768,
+     "ttft_s": 49.01092683398747,
+     "prompt_tokens": 62645,
+     "cached_tokens": 54647,
+     "new_tokens": 7998,
+     "cache_share": 0.9999085120398156,
+     "problem": null,
+     "reasoning_tokens": 109,
+     "completion_tokens": 162,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 66.0070910420036,
+     "ttft_s": 58.779995084012626,
+     "prompt_tokens": 71281,
+     "cached_tokens": 62640,
+     "new_tokens": 8641,
+     "cache_share": 0.9999201851704047,
+     "problem": null,
+     "reasoning_tokens": 87,
+     "completion_tokens": 150,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 73.89908604198718,
+     "ttft_s": 65.08793524999055,
+     "prompt_tokens": 79779,
+     "cached_tokens": 71276,
+     "new_tokens": 8503,
+     "cache_share": 0.9999298550805965,
+     "problem": null,
+     "reasoning_tokens": 152,
+     "completion_tokens": 200,
+     "finish": "tool_calls"
+    }
+   ],
+   "stopped": null,
+   "thinking": "default",
+   "start": {
+    "total_s": 52.76320441698772,
+    "ttft_s": 48.7340437079838,
+    "prompt_tokens": 13104,
+    "valid_call": true,
+    "reasoning_tokens": 53,
+    "finish": "tool_calls"
+   },
+   "total_s": 480.92457796100643,
+   "median_step_s": 54.24476133400458,
+   "first_step_s": 39.4257384170196,
+   "last_step_s": 73.89908604198718,
+   "start_tokens": 13104,
+   "end_tokens": 79779,
+   "valid_calls": 9,
+   "replies": 9,
+   "median_cache_share": 0.9998804060434847,
+   "median_reasoning_tokens": 69.0,
+   "steps_cut": 0
+  },
+  "compaction_default": {
+   "depth_tokens": 79779,
+   "thinking": "default",
+   "total_s": 218.95751916602603,
+   "ttft_s": 1.3324472910026088,
+   "summary_tokens": 3296,
+   "summary_chars": 13129,
+   "write_tps": 20.825936417795656,
+   "cached_tokens": 79774,
+   "prompt_tokens": 79879,
+   "finish": "stop",
+   "called_tool": false,
+   "reasoning_tokens": 1241,
+   "next_turn": {
+    "total_s": 64.24809425001149,
+    "ttft_s": 60.62290095802746,
+    "prompt_tokens": 16422,
+    "cached_tokens": 0,
+    "problem": null,
+    "reasoning_tokens": 67
+   }
+  },
+  "memory": {
+   "idle_bytes": 37426506680,
+   "peak_bytes": 44288739056,
+   "end_bytes": 44254922480,
+   "mapped_bytes": 10716758016,
+   "swap_growth_bytes": -25165824
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "kapitsa",
+  "pid": 90356
+ },
+ "model": "qwen3.8-flash-next:64gb",
+ "model_entry": {
+  "id": "qwen3.8-flash-next:64gb",
+  "object": "model",
+  "type": "model",
+  "display_name": "qwen3.8-flash-next:64gb",
+  "created": 1794288745,
+  "created_at": "2026-11-10T05:32:25Z",
+  "owned_by": "nace",
+  "context_length": 720896,
+  "context_fit": 704018,
+  "slots": 4,
+  "active": true,
+  "downloaded": true,
+  "quant": "EXL3 2-bit routed experts (Sushi's MCG trellis), 8-bit affine attention / DeltaNet / shared experts / embedding / head, 4-bit n-gram table"
+ },
+ "window_declared": 704018,
+ "window_source": "context_fit",
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 527695872,
+  "loadavg": "{ 1.74 1.62 1.60 }",
+  "busy_processes": [
+   "WindowServer 28%"
+  ]
+ },
+ "memory_idle_bytes": 37426506680,
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "fair",
+  "swap_used_bytes": 502530048,
+  "loadavg": "{ 1.57 1.35 1.35 }",
+  "busy_processes": []
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": [
+   "active",
+   "context_fit"
+  ]
+ },
+ "elapsed_s": 860.3,
+ "summary": {
+  "writing_tps": null,
+  "writing_greedy_tps": null,
+  "reading_tps": {},
+  "followup_ttft_s": {},
+  "cache_saving": {},
+  "writing_at_depth_tps": {},
+  "agent_step_s": {},
+  "recall": {},
+  "window": null,
+  "tools": "None/None",
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.573
+  },
+  "memory_peak_bytes": 44288739056,
+  "session": null,
+  "compaction": null,
+  "default_thinking": {
+   "session": {
+    "total_s": 480.92457796100643,
+    "median_step_s": 54.24476133400458,
+    "median_reasoning_tokens": 69.0,
+    "valid_calls": 9,
+    "replies": 9,
+    "steps_cut": 0
+   },
+   "compaction": {
+    "depth_tokens": 79779,
+    "total_s": 218.95751916602603,
+    "summary_tokens": 3296,
+    "reasoning_tokens": 1241
+   },
+   "tools": {
+    "passed": 10,
+    "total": 10,
+    "median_s": 3.0144638954952825,
+    "median_reasoning_tokens": 24.5,
+    "cut": 0
+   },
+   "skipped": null
+  }
+ },
+ "result_file": "supp-kapitsa-flash-next.json"
+}

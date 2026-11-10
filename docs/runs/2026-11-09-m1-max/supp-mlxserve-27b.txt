@@ -1,0 +1,26 @@
+
+   benchcode 0.3.0  ·  http://127.0.0.1:11234  ·  served by mlx-serve
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  ddalcu/Qwen3.8-27B-MLX-Serve-4bit
+
+  ✓ Machine quiet        5 s              no other process over 20% CPU
+  ✓ First request        16.3 s           a 1K-token prompt and a short answer; then 12.0 s: 1.4x on the first
+  ✓ Thinking             off              off by default; the switch turns it on; 47% of output is reasoning when on
+  ✓ Warmed up            42.7 s           a 2.9K-token prompt and a tool call
+  ── default thinking ────────────────────────────────────────────
+  · Default thinking     same as above    the server does not reason unless asked; the rows above are its default
+  ✓ Memory               22.3 GB peak     idle 27 MB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  ddalcu/Qwen3.8-27B-MLX-Serve-4bit                          ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Default    thinking: same as above (off by default)                     │
+  │  Thinking   off                                                          │
+  │  Memory     22.3 GB peak  ·  idle 27 MB                                  │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal nominal   │
+  │             no other process over 20% CPU  ·  elapsed 1.6 min            │
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  › Saved results/supp-mlxserve-27b.json
+exit 0

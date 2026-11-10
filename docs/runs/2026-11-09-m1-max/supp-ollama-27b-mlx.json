@@ -1,0 +1,537 @@
+{
+ "benchcode": "0.3.0",
+ "date": "2026-11-09T22:27:44",
+ "server_url": "http://127.0.0.1:11434",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "!",
+   "label": "Machine busy",
+   "value": "3 processes",
+   "note": "over 20% CPU: WindowServer 32%, airportd 30%, mdworker_shared 23%; measuring anyway, numbers may be low"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "17.1 s",
+   "note": "a 1K-token prompt and a short answer; then 12.8 s: 1.3x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off by switch",
+   "note": "on by default; enable_thinking=false / reasoning_effort=none turns it off; 63% of output is reasoning at the server's default"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "47.2 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Tool calls, default",
+   "value": "10/10 valid",
+   "note": "no thinking switch sent; 3.84 s a call (median); 74 reasoning tokens a call (median)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Session, default",
+   "value": "17.6 min",
+   "note": "no thinking switch sent; 8 steps of 8K tool results, 13K -> 80K context; the first read took 132 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Step, default",
+   "value": "112 s",
+   "note": "median; first 95.5 s, last 143 s; 106 reasoning tokens a step (median); 100% of the prefix reused per step; 9 of 9 replies were well-formed tool calls"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Compaction, default",
+   "value": "227 s",
+   "note": "at 80K where the session ended: a 2,106-token summary written at 12.6 tok/s after 2.34 s and 726 reasoning tokens (100% of the conversation cached); next turn 84.7 s (8,191 of 15,167 tokens cached)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "57.4 GB peak",
+   "note": "idle 16 MB before the first request; includes every conversation the server still keeps; swap grew 3.8 GB"
+  }
+ ],
+ "flags": [
+  "contention: WindowServer 32%, airportd 30%, mdworker_shared 23% ran during the benchmark",
+  "memory: swap grew 3.8 GB (the model is squeezing other apps out)"
+ ],
+ "invalid": [],
+ "depth": {},
+ "once": {
+  "quiet": {
+   "WindowServer": 32,
+   "mdworker_shared": 23,
+   "airportd": 30
+  },
+  "first_request": {
+   "totals_s": [
+    17.098,
+    12.066,
+    13.443
+   ],
+   "penalty": 1.34
+  },
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.632
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 27.9662,
+    "total_s": 39.236,
+    "prompt_tokens": 2923,
+    "cached_tokens": 0,
+    "completion_tokens": 256,
+    "reasoning_tokens": null,
+    "finish": "length",
+    "tool_calls": [],
+    "content_chars": 1107,
+    "reasoning_chars": 0,
+    "events": 238,
+    "timings": {
+     "prompt_n": 2923,
+     "prompt_ms": 27668,
+     "prompt_per_token_ms": 9.465617516250427,
+     "prompt_per_second": 105.64551105970797,
+     "predicted_n": 256,
+     "predicted_ms": 11529,
+     "predicted_per_token_ms": 45.03515625,
+     "predicted_per_second": 22.204874663891058
+    }
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 7.9253,
+    "total_s": 7.925,
+    "prompt_tokens": 732,
+    "cached_tokens": 2,
+    "completion_tokens": 26,
+    "reasoning_tokens": null,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 1,
+    "timings": {
+     "prompt_n": 732,
+     "prompt_ms": 6716,
+     "prompt_per_token_ms": 9.174863387978142,
+     "prompt_per_second": 108.99344848123883,
+     "predicted_n": 26,
+     "predicted_ms": 1191,
+     "predicted_per_token_ms": 45.80769230769231,
+     "predicted_per_second": 21.8303946263644
+    }
+   }
+  },
+  "default_thinking": {
+   "switch_sent": null,
+   "reply_cap": 4096
+  },
+  "tools_default": {
+   "trials": [
+    {
+     "i": 0,
+     "ok": true,
+     "why": "",
+     "total_s": 9.355827666004188,
+     "reasoning_tokens": 57,
+     "completion_tokens": 57,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 1,
+     "ok": true,
+     "why": "",
+     "total_s": 3.7326920830237214,
+     "reasoning_tokens": 74,
+     "completion_tokens": 74,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 2,
+     "ok": true,
+     "why": "",
+     "total_s": 3.6069139580067713,
+     "reasoning_tokens": 68,
+     "completion_tokens": 68,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 3,
+     "ok": true,
+     "why": "",
+     "total_s": 3.479272791009862,
+     "reasoning_tokens": 73,
+     "completion_tokens": 73,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 4,
+     "ok": true,
+     "why": "",
+     "total_s": 3.3154984999855515,
+     "reasoning_tokens": 71,
+     "completion_tokens": 71,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 5,
+     "ok": true,
+     "why": "",
+     "total_s": 2.9251987079915125,
+     "reasoning_tokens": 60,
+     "completion_tokens": 60,
+     "finish": "tool_calls",
+     "tool": "grep"
+    },
+    {
+     "i": 6,
+     "ok": true,
+     "why": "",
+     "total_s": 4.858744500001194,
+     "reasoning_tokens": 98,
+     "completion_tokens": 98,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 7,
+     "ok": true,
+     "why": "",
+     "total_s": 4.1998546670074575,
+     "reasoning_tokens": 98,
+     "completion_tokens": 98,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 8,
+     "ok": true,
+     "why": "",
+     "total_s": 3.954539833997842,
+     "reasoning_tokens": 79,
+     "completion_tokens": 79,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 9,
+     "ok": true,
+     "why": "",
+     "total_s": 4.529810167005053,
+     "reasoning_tokens": 93,
+     "completion_tokens": 93,
+     "finish": "tool_calls",
+     "tool": "write"
+    }
+   ],
+   "passed": 10,
+   "total": 10,
+   "median_s": 3.8436159585107816,
+   "median_reasoning_tokens": 73.5,
+   "cut": 0
+  },
+  "session_default": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [
+    {
+     "total_s": 95.46708695800044,
+     "ttft_s": 90.4822956249991,
+     "prompt_tokens": 21654,
+     "cached_tokens": 13051,
+     "new_tokens": 8603,
+     "cache_share": 0.9996170343137255,
+     "problem": null,
+     "reasoning_tokens": 108,
+     "completion_tokens": 108,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 103.61567800000194,
+     "ttft_s": 95.90935508301482,
+     "prompt_tokens": 30335,
+     "cached_tokens": 21649,
+     "new_tokens": 8686,
+     "cache_share": 0.9997690957790708,
+     "problem": null,
+     "reasoning_tokens": 142,
+     "completion_tokens": 142,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 94.57078870901023,
+     "ttft_s": 88.16971316700801,
+     "prompt_tokens": 37931,
+     "cached_tokens": 30330,
+     "new_tokens": 7601,
+     "cache_share": 0.9998351738915444,
+     "problem": null,
+     "reasoning_tokens": 105,
+     "completion_tokens": 105,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 109.53212745898054,
+     "ttft_s": 104.29461408397765,
+     "prompt_tokens": 46408,
+     "cached_tokens": 37926,
+     "new_tokens": 8482,
+     "cache_share": 0.999868181698347,
+     "problem": null,
+     "reasoning_tokens": 83,
+     "completion_tokens": 83,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 115.04711029099417,
+     "ttft_s": 108.19774954099557,
+     "prompt_tokens": 54562,
+     "cached_tokens": 46403,
+     "new_tokens": 8159,
+     "cache_share": 0.9998922599551802,
+     "problem": null,
+     "reasoning_tokens": 116,
+     "completion_tokens": 116,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 126.04486379199079,
+     "ttft_s": 115.70139095900231,
+     "prompt_tokens": 62555,
+     "cached_tokens": 54557,
+     "new_tokens": 7998,
+     "cache_share": 0.9999083611304571,
+     "problem": null,
+     "reasoning_tokens": 137,
+     "completion_tokens": 137,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 136.07108933400013,
+     "ttft_s": 129.04346991700004,
+     "prompt_tokens": 71182,
+     "cached_tokens": 62550,
+     "new_tokens": 8632,
+     "cache_share": 0.9999200703381025,
+     "problem": null,
+     "reasoning_tokens": 105,
+     "completion_tokens": 105,
+     "finish": "tool_calls"
+    },
+    {
+     "total_s": 142.86972504100413,
+     "ttft_s": 137.7341467080114,
+     "prompt_tokens": 79669,
+     "cached_tokens": 71177,
+     "new_tokens": 8492,
+     "cache_share": 0.9999297575229693,
+     "problem": null,
+     "reasoning_tokens": 64,
+     "completion_tokens": 64,
+     "finish": "tool_calls"
+    }
+   ],
+   "stopped": null,
+   "thinking": "default",
+   "start": {
+    "total_s": 131.83743166699423,
+    "ttft_s": 128.11571995800477,
+    "prompt_tokens": 13056,
+    "valid_call": true,
+    "reasoning_tokens": 88,
+    "finish": "tool_calls"
+   },
+   "total_s": 1055.0559012509766,
+   "median_step_s": 112.28961887498735,
+   "first_step_s": 95.46708695800044,
+   "last_step_s": 142.86972504100413,
+   "start_tokens": 13056,
+   "end_tokens": 79669,
+   "valid_calls": 9,
+   "replies": 9,
+   "median_cache_share": 0.9998802208267636,
+   "median_reasoning_tokens": 106.5,
+   "steps_cut": 0
+  },
+  "compaction_default": {
+   "depth_tokens": 79669,
+   "thinking": "default",
+   "total_s": 226.90243191699847,
+   "ttft_s": 2.3441518750041723,
+   "summary_tokens": 2106,
+   "summary_chars": 8294,
+   "write_tps": 12.586247325905237,
+   "cached_tokens": 79664,
+   "prompt_tokens": 79769,
+   "finish": "stop",
+   "called_tool": false,
+   "reasoning_tokens": 726,
+   "next_turn": {
+    "total_s": 84.74050416602404,
+    "ttft_s": 70.56483683301485,
+    "prompt_tokens": 15167,
+    "cached_tokens": 8191,
+    "problem": null,
+    "reasoning_tokens": 219
+   }
+  },
+  "memory": {
+   "idle_bytes": 16876288,
+   "peak_bytes": 61661379344,
+   "end_bytes": 35582753552,
+   "mapped_bytes": 3293184,
+   "swap_growth_bytes": 4066702787
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "ollama",
+  "pid": 96176
+ },
+ "model": "qwen3.8:27b-mlx",
+ "model_entry": {
+  "id": "qwen3.8:27b-mlx",
+  "object": "model",
+  "created": 1791070003,
+  "owned_by": "library"
+ },
+ "window_declared": null,
+ "window_source": null,
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 846075002,
+  "loadavg": "{ 2.66 2.02 1.95 }",
+  "busy_processes": [
+   "WindowServer 30%"
+  ]
+ },
+ "memory_idle_bytes": 16876288,
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "fair",
+  "swap_used_bytes": 4912777789,
+  "loadavg": "{ 0.86 0.85 1.11 }",
+  "busy_processes": []
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": []
+ },
+ "elapsed_s": 1522.5,
+ "summary": {
+  "writing_tps": null,
+  "writing_greedy_tps": null,
+  "reading_tps": {},
+  "followup_ttft_s": {},
+  "cache_saving": {},
+  "writing_at_depth_tps": {},
+  "agent_step_s": {},
+  "recall": {},
+  "window": null,
+  "tools": "None/None",
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.632
+  },
+  "memory_peak_bytes": 61661379344,
+  "session": null,
+  "compaction": null,
+  "default_thinking": {
+   "session": {
+    "total_s": 1055.0559012509766,
+    "median_step_s": 112.28961887498735,
+    "median_reasoning_tokens": 106.5,
+    "valid_calls": 9,
+    "replies": 9,
+    "steps_cut": 0
+   },
+   "compaction": {
+    "depth_tokens": 79669,
+    "total_s": 226.90243191699847,
+    "summary_tokens": 2106,
+    "reasoning_tokens": 726
+   },
+   "tools": {
+    "passed": 10,
+    "total": 10,
+    "median_s": 3.8436159585107816,
+    "median_reasoning_tokens": 73.5,
+    "cut": 0
+   },
+   "skipped": null
+  }
+ },
+ "result_file": "supp-ollama-27b-mlx.json"
+}
