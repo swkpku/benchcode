@@ -90,7 +90,7 @@ def main(files):
     os.makedirs(out, exist_ok=True)
     for theme in THEMES:
         chart(os.path.join(out, f"reading-{theme}.svg"), reading, "Reading speed by context depth (cold prompt, thinking off)", "tok/s, log scale", True, theme)
-        chart(os.path.join(out, f"agent-step-{theme}.svg"), step, "Agent step by context depth (a 4K tool result, then 64 tokens)", "seconds", False, theme)
+        chart(os.path.join(out, f"agent-step-{theme}.svg"), step, "Agent step by context depth (a 4K tool result, then 64 tokens)", "seconds, log scale", True, theme)
     print(f"wrote 4 charts to {out}")
 
 
