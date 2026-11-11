@@ -10,8 +10,8 @@ speed and memory.
 
 It talks only to the server's OpenAI-compatible endpoint and to macOS. Nothing in it depends on
 which engine answers. It has run unchanged against [Kapitsa](https://github.com/nace-ai/kapitsa),
-[oMLX](https://github.com/jundot/omlx), [mlx-serve](https://github.com/ddalcu/mlx-serve) and
-[Ollama](https://ollama.com).
+[oMLX](https://github.com/jundot/omlx), [mlx-serve](https://github.com/ddalcu/mlx-serve),
+[Ollama](https://ollama.com) and [TensorFold](https://github.com/ashhart/TensorFold).
 
 ```
 git clone https://github.com/swkpku/benchcode
@@ -102,13 +102,15 @@ Other flags: `--model ID` when the server lists more than one, `--json` to print
 `--out FILE` to choose where it is saved. The API key, if the server wants one, is read from
 `BENCH_API_KEY`.
 
-## Results: nine stacks on one Mac
+## Results: five servers on one Mac
 
 MacBook Pro M1 Max, 32-core GPU, 64 GB, macOS 26.5.1, 2026-11-09, `--deep`, one run per pair,
 thinking off. Kapitsa 0.2.31, oMLX 0.7.4, mlx-serve 26.11.2, Ollama 0.35.1, each started with its
 default settings. Qwen3.8 27B and Qwen3.6 35B-A3B are 4-bit builds on every server except oMLX,
 whose 35B is 8-bit. The rows, the JSON and the full table are in
-[`docs/runs/2026-11-09-m1-max`](docs/runs/2026-11-09-m1-max/summary.md).
+[`docs/runs/2026-11-09-m1-max`](docs/runs/2026-11-09-m1-max/summary.md). TensorFold 1.2.5 was
+added on 2026-11-10 and has its own section below; its line in the charts is from the run with a
+139K context, stopped at 64K.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/reading-dark.svg">
@@ -182,6 +184,40 @@ same eight steps, same compaction request. Full table in
   oMLX's 27B reasoned for 3,369 tokens and was cut. The 35B-A3B models summarised in 32 to 59 s.
 - **mlx-serve turns thinking off by itself** when no switch is sent, so its default rows equal its
   thinking-off rows.
+
+### TensorFold, added 2026-11-10
+
+TensorFold 1.2.5 serves `TensorFold/Qwen3.8-27B-MLX-4bit`, the same affine 4-bit group-64
+quantization as Kapitsa's 27B, with the `z-lab/Qwen3.8-27B-DFlash2` drafter. Its native Metal engine
+does not serve the 35B-A3B yet, and Flash-Next needs more memory than 64 GB. Two runs, in
+[`docs/runs/2026-11-10-m1-max-tensorfold`](docs/runs/2026-11-10-m1-max-tensorfold): one as shipped,
+where the server declares a 33K window, and one with `--context 139264`, the only non-default
+setting, so the depth ladder could continue. The second was stopped by hand after 2.5 hours at 64K.
+
+| | TensorFold 27B, as shipped | TensorFold 27B, 139K context | Kapitsa 27B |
+|---|---|---|---|
+| Declared window | 33K | 139K | 262K |
+| Writing T=0.6, tok/s | 38.2 | 38.8 | 63.2 |
+| Reading 4K / 16K / 32K / 64K, tok/s | 73.7 / 63.6 / – / – | 81.0 / 75.2 / 68.3 / 57.7 | 133 / 127 / 109 / 93.6 |
+| Follow-up 4K / 64K, s | 0.62 / – | 0.61 / 0.93 | 0.28 / 0.46 |
+| Writing at 4K / 16K / 32K / 64K, tok/s | 22.2 / 7.5 / – / – | 23.2 / 8.7 / 4.6 / 2.5 | 55.5 / 42.6 / 44.8 / 27.9 |
+| Agent step 4K / 16K / 32K / 64K, s | 70.2 / 92.2 / – / – | 117 / 310 / 595 / 637 | 35.7 / 42.9 / 50.8 / 50.0 |
+| Recall | 3/3 at each depth | 3/3 at each depth | 3/3 at each depth |
+| Agent session | 1 step, stopped by the 33K window | not reached | 8 steps, 13.5 min |
+| Compaction | 575 s at 22K, 60% cached; next turn 207 s, 0 cached | not reached | 75 s at 79K, 100% cached; next turn 20.8 s |
+| Tool calls | 10/10, round trip failed | not reached | 10/10, round trip ok |
+| Memory peak, GB | 28.1 | 35.1 to 64K | 44.4 |
+
+- **Short-context writing is in the oMLX range** at 38 tok/s, and it held over five minutes.
+- **Everything at depth is slow on this chip.** Reading is about half the others, and writing on
+  top of a document falls to 2.5 tok/s at 64K. TensorFold's docs say its tuned decode path is for
+  M5 chips; M1 through M4 take a plainer one.
+- **The prompt cache has a 4 GiB budget** and evicts constantly. The summary request found 60
+  percent of a 22K conversation cached, the next turn 0 of 15K tokens, and with the larger window
+  the agent step took 10 minutes at 32K and 64K because the context was re-read.
+- **The as-shipped run had Chrome at 38 to 160 percent CPU** for its first half and is flagged. The
+  139K run was on a quiet machine; where the two disagree at 4K and 16K, trust the second.
+- **Lightest on memory** of the five servers, 28 GB peak as shipped.
 
 ## Method
 

@@ -1,0 +1,926 @@
+{
+ "benchcode": "0.3.0",
+ "date": "2026-11-10T21:07:32",
+ "server_url": "http://127.0.0.1:8080",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "\u2713",
+   "label": "Machine quiet",
+   "value": "5 s",
+   "note": "no other process over 20% CPU"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "16.0 s",
+   "note": "a 1K-token prompt and a short answer; then 15.6 s: 1.0x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off by switch",
+   "note": "on by default; enable_thinking=false / reasoning_effort=none turns it off; 61% of output is reasoning at the server's default"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "60.0 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing, T = 0.6",
+   "value": "38.8 tok/s",
+   "note": "30.6\u201341.7, 5 of 5 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing, greedy",
+   "value": "40.1 tok/s",
+   "note": "39.7\u201340.6, 5 of 5 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 4K",
+   "value": "81.0 tok/s",
+   "note": "4,187 tokens in 51.7 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 4K",
+   "value": "0.61 s",
+   "note": "median of 3 turns; cache hit, 4241 tokens reused; 85x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 4K",
+   "value": "23.2 tok/s",
+   "note": "60% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 4K",
+   "value": "117 s",
+   "note": "a 4K-token tool result read at 77.2 tok/s, then 39 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 4K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 4K",
+   "value": "35.1 GB",
+   "note": "now; 35.1 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 16K",
+   "value": "75.2 tok/s",
+   "note": "16,336 tokens in 217 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 16K",
+   "value": "0.68 s",
+   "note": "median of 3 turns; cache hit, 16433 tokens reused; 320x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 16K",
+   "value": "8.7 tok/s",
+   "note": "22% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 16K",
+   "value": "310 s",
+   "note": "a 4K-token tool result read at 70.6 tok/s, then 64 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 16K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 16K",
+   "value": "35.1 GB",
+   "note": "now; 35.1 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 32K",
+   "value": "68.3 tok/s",
+   "note": "32,734 tokens in 479 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 32K",
+   "value": "0.76 s",
+   "note": "median of 3 turns; cache hit, 32812 tokens reused; 629x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 32K",
+   "value": "4.6 tok/s",
+   "note": "12% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 32K",
+   "value": "595 s",
+   "note": "a 4K-token tool result read at 65.4 tok/s, then 60 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 32K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 32K",
+   "value": "35.1 GB",
+   "note": "now; 35.1 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 64K",
+   "value": "57.7 tok/s",
+   "note": "65,424 tokens in 1134 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 64K",
+   "value": "0.93 s",
+   "note": "median of 3 turns; cache hit, 65514 tokens reused; 1213x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 64K",
+   "value": "2.5 tok/s",
+   "note": "7% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 64K",
+   "value": "637 s",
+   "note": "a 4K-token tool result, then 0 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 64K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 64K",
+   "value": "35.1 GB",
+   "note": "now; 35.1 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Window",
+   "value": "tested to 64K",
+   "note": "139K declared by /v1/models (context_length); not probed past the declared window"
+  },
+  {
+   "mark": "\u00b7",
+   "label": "Cache survival",
+   "value": "untested",
+   "note": "URLError: <urlopen error [Errno 61] Connection refused>"
+  },
+  {
+   "mark": "!",
+   "label": "Tool calls",
+   "value": "0/10 valid",
+   "note": "round trip no call to complete; forced choice rejected; with thinking on: NO call; misses: URLError: <urlopen error [Errno 61] Connection refused>"
+  },
+  {
+   "mark": "!",
+   "label": "Protocol",
+   "value": "1 issue",
+   "note": "no usage in streams"
+  },
+  {
+   "mark": "\u2717",
+   "label": "Agent session",
+   "value": "failed",
+   "note": "URLError: <urlopen error [Errno 61] Connection refused>"
+  },
+  {
+   "mark": "\u2717",
+   "label": "Server health",
+   "value": "down",
+   "note": "the server stopped answering; the remaining rows are skipped"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "35.1 GB peak",
+   "note": "idle 34.9 GB before the first request; includes every conversation the server still keeps"
+  }
+ ],
+ "flags": [
+  "tools: only 0/10 calls well-formed (malformed calls are dropped by the harness)",
+  "protocol: no usage in streams"
+ ],
+ "invalid": [
+  "server stopped answering after an over-long prompt"
+ ],
+ "depth": {
+  "4000": {
+   "size": 4000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 51.6935,
+    "total_s": 52.908,
+    "prompt_tokens": 4187,
+    "cached_tokens": 0,
+    "completion_tokens": 26,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 89,
+    "reasoning_chars": 0,
+    "events": 6,
+    "timings": null
+   },
+   "prompt_tokens": 4187,
+   "ttft_s": 51.69352583299042,
+   "prefill_tps": 80.9966032018634,
+   "cold_cached": 0,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. On the fridge door in the Lisbon office kitchen.\n2. Bramble.\n3. Every second Thursday.",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.6405001250095665,
+     "prompt_tokens": 4235,
+     "cached_tokens": 4213,
+     "finish": "stop",
+     "new_tps": 34.34815879180571
+    },
+    {
+     "ttft_s": 0.6056031250045635,
+     "prompt_tokens": 4268,
+     "cached_tokens": 4241,
+     "finish": "stop",
+     "new_tps": 44.583653692005875
+    },
+    {
+     "ttft_s": 0.5991037089843303,
+     "prompt_tokens": 4297,
+     "cached_tokens": 4277,
+     "finish": "stop",
+     "new_tps": 33.383201773039104
+    }
+   ],
+   "followup_ttft_s": 0.6056031250045635,
+   "followup_cached": 4241,
+   "cache_saving": 85.3587501428446,
+   "cache_hit": true,
+   "write_tps": 23.191174045028372,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.5973266391530202,
+   "step": {
+    "total_s": 117.0708815830003,
+    "ttft_s": 112.94063691599877,
+    "new_tokens": 8717,
+    "cached_tokens": 0,
+    "new_tps": 77.18213955605187,
+    "answer_tokens": 39
+   },
+   "memory_bytes": 37662602200,
+   "memory_peak_bytes": 37665797080,
+   "mapped_bytes": 6275072
+  },
+  "16000": {
+   "size": 16000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 217.0933,
+    "total_s": 221.654,
+    "prompt_tokens": 16336,
+    "cached_tokens": 0,
+    "completion_tokens": 44,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 181,
+    "reasoning_chars": 0,
+    "events": 11,
+    "timings": null
+   },
+   "prompt_tokens": 16336,
+   "ttft_s": 217.09333883298677,
+   "prefill_tps": 75.24873903463033,
+   "cold_cached": 0,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen.\n2. Priya's cat is called Bramble.\n3. The staging database credential is rotated every second Thursday.",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.7069019170012325,
+     "prompt_tokens": 16402,
+     "cached_tokens": 16380,
+     "finish": "stop",
+     "new_tps": 31.12171500867728
+    },
+    {
+     "ttft_s": 0.6793696249951608,
+     "prompt_tokens": 16460,
+     "cached_tokens": 16433,
+     "finish": "stop",
+     "new_tps": 39.74272473573178
+    },
+    {
+     "ttft_s": 0.6476360419765115,
+     "prompt_tokens": 16504,
+     "cached_tokens": 16484,
+     "finish": "stop",
+     "new_tps": 30.881542569746856
+    }
+   ],
+   "followup_ttft_s": 0.6793696249951608,
+   "followup_cached": 16433,
+   "cache_saving": 319.55114100742014,
+   "cache_hit": true,
+   "write_tps": 8.712037512340176,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.22439278310434627,
+   "step": {
+    "total_s": 309.8076737909869,
+    "ttft_s": 299.9401804159861,
+    "new_tokens": 21165,
+    "cached_tokens": 0,
+    "new_tps": 70.56407037778776,
+    "answer_tokens": 64
+   },
+   "memory_bytes": 37662995440,
+   "memory_peak_bytes": 37672416240,
+   "mapped_bytes": 6275072
+  },
+  "32000": {
+   "size": 32000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 479.1392,
+    "total_s": 490.498,
+    "prompt_tokens": 32734,
+    "cached_tokens": 0,
+    "completion_tokens": 44,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 181,
+    "reasoning_chars": 0,
+    "events": 12,
+    "timings": null
+   },
+   "prompt_tokens": 32734,
+   "ttft_s": 479.13923962498666,
+   "prefill_tps": 68.31834525934526,
+   "cold_cached": 0,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen.\n2. Priya's cat is called Bramble.\n3. The staging database credential is rotated every second Thursday.",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.7621158750262111,
+     "prompt_tokens": 32800,
+     "cached_tokens": 32778,
+     "finish": "stop",
+     "new_tps": 28.867001358872578
+    },
+    {
+     "ttft_s": 0.7682289580116048,
+     "prompt_tokens": 32839,
+     "cached_tokens": 32812,
+     "finish": "stop",
+     "new_tps": 35.14577225764007
+    },
+    {
+     "ttft_s": 0.7071938749868423,
+     "prompt_tokens": 32870,
+     "cached_tokens": 32850,
+     "finish": "stop",
+     "new_tps": 28.280787924488333
+    }
+   ],
+   "followup_ttft_s": 0.7621158750262111,
+   "followup_cached": 32812,
+   "cache_saving": 628.6960491519847,
+   "cache_hit": true,
+   "write_tps": 4.551991591407072,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.11724399262705235,
+   "step": {
+    "total_s": 594.6295664999925,
+    "ttft_s": 572.441487834003,
+    "new_tokens": 37429,
+    "cached_tokens": 0,
+    "new_tps": 65.38484857487074,
+    "answer_tokens": 60
+   },
+   "memory_bytes": 37663323168,
+   "memory_peak_bytes": 37682836488,
+   "mapped_bytes": 6275072
+  },
+  "64000": {
+   "size": 64000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 1133.6053,
+    "total_s": 1151.51,
+    "prompt_tokens": 65424,
+    "cached_tokens": 0,
+    "completion_tokens": 38,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 138,
+    "reasoning_chars": 0,
+    "events": 9,
+    "timings": null
+   },
+   "prompt_tokens": 65424,
+   "ttft_s": 1133.605279499985,
+   "prefill_tps": 57.71321039441301,
+   "cold_cached": 0,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen.\n2. Priya's cat is called Bramble.\n3. Every second Thursday.",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.9348207500006538,
+     "prompt_tokens": 65484,
+     "cached_tokens": 65462,
+     "finish": "stop",
+     "new_tps": 23.53392348210565
+    },
+    {
+     "ttft_s": 0.9435643749893643,
+     "prompt_tokens": 65541,
+     "cached_tokens": 65514,
+     "finish": "stop",
+     "new_tps": 28.61489975212803
+    },
+    {
+     "ttft_s": 0.8270862500066869,
+     "prompt_tokens": 65582,
+     "cached_tokens": 65562,
+     "finish": "stop",
+     "new_tps": 24.181274927298457
+    }
+   ],
+   "followup_ttft_s": 0.9348207500006538,
+   "followup_cached": 65514,
+   "cache_saving": 1212.6445412119833,
+   "cache_hit": true,
+   "write_tps": 2.533337512610034,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.06525025336403888,
+   "step": {
+    "total_s": 637.0665415840049,
+    "ttft_s": null,
+    "new_tokens": 69764,
+    "cached_tokens": 0,
+    "new_tps": null,
+    "answer_tokens": 0
+   },
+   "memory_bytes": 37659178064,
+   "memory_peak_bytes": 37705151544,
+   "mapped_bytes": 6275072
+  }
+ },
+ "once": {
+  "quiet": {},
+  "first_request": {
+   "totals_s": [
+    15.983,
+    15.876,
+    15.288
+   ],
+   "penalty": 1.03
+  },
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.615
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 36.0643,
+    "total_s": 50.177,
+    "prompt_tokens": 2927,
+    "cached_tokens": 0,
+    "completion_tokens": 256,
+    "reasoning_tokens": 0,
+    "finish": "length",
+    "tool_calls": [],
+    "content_chars": 1005,
+    "reasoning_chars": 0,
+    "events": 75,
+    "timings": null
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 9.4029,
+    "total_s": 9.802,
+    "prompt_tokens": 738,
+    "cached_tokens": 0,
+    "completion_tokens": 27,
+    "reasoning_tokens": 0,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 5,
+    "timings": null
+   }
+  },
+  "writing": {
+   "median_tps": 38.82494522245369,
+   "min_tps": 30.615941933655904,
+   "max_tps": 41.65905326081901,
+   "valid_runs": 5,
+   "runs": 5,
+   "draft_acceptance": null,
+   "flags": []
+  },
+  "writing_greedy": {
+   "median_tps": 40.11128818365813,
+   "min_tps": 39.73360945896697,
+   "max_tps": 40.58975206531612,
+   "valid_runs": 5,
+   "runs": 5,
+   "draft_acceptance": null,
+   "flags": []
+  },
+  "tools": {
+   "trials": [
+    {
+     "i": 0,
+     "prompt": "Read the file src/main.py.",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 1,
+     "prompt": "Create a file named notes/todo.md whose content is exactly: ",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 2,
+     "prompt": "Run the test suite with: python3 -m pytest -q",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 3,
+     "prompt": "In config.py replace the line `TIMEOUT = 30` with `TIMEOUT =",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 4,
+     "prompt": "Find every Python file under the src directory.",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 5,
+     "prompt": "Search the repository for the string TODO.",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 6,
+     "prompt": "Write a C++ hello world program to hello.cpp. It must #inclu",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 7,
+     "prompt": "Read lines 10 to 20 of README.md.",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 8,
+     "prompt": "Run `ls -la` in the current directory with a timeout of 5000",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    },
+    {
+     "i": 9,
+     "prompt": "Create data/sample.json containing a JSON object with keys \"",
+     "ok": false,
+     "why": "URLError: <urlopen error [Errno 61] Connection refused>",
+     "status": null,
+     "finish": null,
+     "tool": null
+    }
+   ],
+   "passed": 0,
+   "total": 10,
+   "round_trip": null,
+   "forced_choice": null,
+   "tool_call_with_thinking_on": "NO call",
+   "other_tool_first": 0
+  },
+  "protocol": {
+   "stream_usage": false,
+   "plain_with_tools_finish": null,
+   "plain_with_tools_called": false,
+   "cap_finish": null,
+   "truncated_tool_call": {
+    "status": null,
+    "finish": null,
+    "tool_calls": 0,
+    "error": "URLError: <urlopen error [Errno 61] Connection refused>",
+    "content_chars": 0,
+    "events": 0
+   }
+  },
+  "session": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [],
+   "stopped": "start failed: URLError: <urlopen error [Errno 61] Connection refused>",
+   "thinking": "off"
+  },
+  "memory": {
+   "idle_bytes": 37513605912,
+   "peak_bytes": 37705151544,
+   "end_bytes": 37659178064,
+   "mapped_bytes": 6275072,
+   "swap_growth_bytes": 0
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "tensorfold-native",
+  "pid": 6948
+ },
+ "model": "Qwen3.8-27B-MLX-4bit",
+ "model_entry": {
+  "id": "Qwen3.8-27B-MLX-4bit",
+  "object": "model",
+  "created": 1794373653,
+  "owned_by": "tensorfold",
+  "capabilities": {
+   "text_generation": true,
+   "context_fitted": false,
+   "call_gates": false,
+   "loop_guard": true,
+   "thinking_budget": true,
+   "reasoning": true,
+   "answer_limit": true,
+   "structures": true,
+   "logprobs": false,
+   "penalties": false,
+   "prompt_logprobs": false,
+   "prompt_cache": false,
+   "warm_turns": false,
+   "plain_only": false,
+   "decides": false,
+   "pictures": false,
+   "greedy_only": false,
+   "slide_conversations": false,
+   "vision": false,
+   "speech": false,
+   "embeddings": false,
+   "readouts": false,
+   "rerank": false,
+   "thinking_switch": true,
+   "thinking_applicable": true
+  },
+  "context_length": 139264,
+  "max_model_len": 139264,
+  "reasoning": {
+   "default_enabled": true,
+   "supported_efforts": [
+    "xhigh",
+    "medium",
+    "low",
+    "none"
+   ]
+  }
+ },
+ "window_declared": 139264,
+ "window_source": "context_length",
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 323160637,
+  "loadavg": "{ 2.25 1.12 1.09 }",
+  "busy_processes": []
+ },
+ "memory_idle_bytes": 37513605912,
+ "ladder_sizes": [
+  4000,
+  16000,
+  32000,
+  64000
+ ],
+ "window": {
+  "declared": 139264,
+  "source": "context_length",
+  "tested_to": 64000,
+  "skipped": [],
+  "past_window": null
+ },
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "fair",
+  "swap_used_bytes": 323160637,
+  "loadavg": "{ 2.32 2.36 1.44 }",
+  "busy_processes": [
+   "WindowServer 41%",
+   "Google Chrome Helper (Aperitif Renderer) 25%",
+   "Claude Helper 22%"
+  ]
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": [
+   "context_length"
+  ]
+ },
+ "elapsed_s": 9233.9,
+ "summary": {
+  "writing_tps": 38.82494522245369,
+  "writing_greedy_tps": 40.11128818365813,
+  "reading_tps": {
+   "4000": 80.9966032018634,
+   "16000": 75.24873903463033,
+   "32000": 68.31834525934526,
+   "64000": 57.71321039441301
+  },
+  "followup_ttft_s": {
+   "4000": 0.6056031250045635,
+   "16000": 0.6793696249951608,
+   "32000": 0.7621158750262111,
+   "64000": 0.9348207500006538
+  },
+  "cache_saving": {
+   "4000": 85.3587501428446,
+   "16000": 319.55114100742014,
+   "32000": 628.6960491519847,
+   "64000": 1212.6445412119833
+  },
+  "writing_at_depth_tps": {
+   "4000": 23.191174045028372,
+   "16000": 8.712037512340176,
+   "32000": 4.551991591407072,
+   "64000": 2.533337512610034
+  },
+  "agent_step_s": {
+   "4000": 117.0708815830003,
+   "16000": 309.8076737909869,
+   "32000": 594.6295664999925,
+   "64000": 637.0665415840049
+  },
+  "recall": {
+   "4000": 3,
+   "16000": 3,
+   "32000": 3,
+   "64000": 3
+  },
+  "window": {
+   "declared": 139264,
+   "source": "context_length",
+   "tested_to": 64000,
+   "skipped": [],
+   "past_window": null
+  },
+  "tools": "0/10",
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.615
+  },
+  "memory_peak_bytes": 37705151544,
+  "session": null,
+  "compaction": null,
+  "default_thinking": {
+   "session": null,
+   "compaction": null,
+   "tools": null,
+   "skipped": null
+  },
+  "projected_task_min": {
+   "at": 16000,
+   "turns": 12,
+   "minutes": 65.6
+  }
+ },
+ "result_file": "deep-tensorfold-27b-128k.json",
+ "note": "stopped by hand at 64K after 2.5 h; the INVALID reason and the tool/protocol flags after it are the stop, not the server"
+}

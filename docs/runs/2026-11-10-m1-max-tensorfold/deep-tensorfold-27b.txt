@@ -1,0 +1,79 @@
+
+   benchcode 0.3.0  ·  http://127.0.0.1:8080  ·  served by tensorfold-native
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  Qwen3.8-27B-MLX-4bit
+
+  ! Machine busy         4 processes      over 20% CPU: Google Chrome Helper (Aperitif) 38%, Google Chrome Helper (Aperitif Renderer) 32%, claude 22%; measuring anyway, numbers may be low
+  ✓ First request        15.0 s           a 1K-token prompt and a short answer; then 15.8 s: 1.0x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 68% of output is reasoning at the server's default
+  ✓ Warmed up            54.1 s           a 2.9K-token prompt and a tool call
+  ✓ Writing, T = 0.6     38.2 tok/s       35.6–41.8, 5 of 5 runs valid
+  ✓ Writing, greedy      40.0 tok/s       39.5–40.3, 5 of 5 runs valid
+  ── 4K context ──────────────────────────────────────────────────
+  ✓ Reading 4K           73.7 tok/s       4,188 tokens in 56.8 s
+  ✓ Follow-up at 4K      0.62 s           median of 3 turns; cache hit, 4242 tokens reused; 91x faster than the cold read
+  ✓ Writing at 4K        22.2 tok/s       58% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 4K     70.2 s           a 4K-token tool result read at 63.8 tok/s, then 27 tokens
+  ✓ Recall at 4K         3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 4K         27.1 GB          now; 27.6 GB peak so far
+  ── 16K context ─────────────────────────────────────────────────
+  ! Reading 16K          63.6 tok/s       16,334 tokens in 257 s; busy at the end of the read: Google Chrome Helper (Aperitif Renderer) 160%, Claude Helper (Renderer) 58%, Google Chrome Helper (Aperitif) 55%
+  ✓ Follow-up at 16K     0.77 s           median of 3 turns; cache hit, 16400 tokens reused; 332x faster than the cold read
+  ✓ Writing at 16K       7.5 tok/s        20% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 16K    92.2 s           a 4K-token tool result read at 54.8 tok/s, then 64 tokens
+  ✓ Recall at 16K        3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 16K        26.0 GB          now; 27.6 GB peak so far
+  ✓ Window               tested to 16K    33K declared by /v1/models (context_length); not probed past the declared window
+  ── once per run ────────────────────────────────────────────────
+  ✓ Cache survival       hit / hit        new question on the same prefix: hit; prefix after another conversation: kept
+  ✓ Tool calls           10/10 valid      round trip FAILED; forced choice honoured; 1 chose another tool first (glob), which is not an error; with thinking on: structured
+  ✓ Protocol             ok               usage in streams; finish reasons correct; when a tool call is cut by the output cap, a partial call is streamed
+  ── agent session ───────────────────────────────────────────────
+  ✓ Agent session        6.3 min          1 steps of 8K tool results, 13K -> 22K context; the first read took 208 s; the next step would pass 75% of the 33K window
+  ✓ Session step         169 s            median; first 169 s, last 169 s; 100% of the prefix reused per step; 2 of 2 replies were well-formed tool calls
+  ✓ Compaction at 22K    575 s            where the session ended: a 2,048-token summary written at 4.9 tok/s after 159 s (60% of the conversation cached); cut at 2048 tokens; next turn 207 s (0 of 15,142 tokens cached)
+  ── default thinking ────────────────────────────────────────────
+  ✓ Tool calls, default  10/10 valid      no thinking switch sent; 2.43 s a call (median); 32 reasoning tokens a call (median)
+  ✓ Session, default     6.3 min          no thinking switch sent; 1 steps of 8K tool results, 13K -> 22K context; the first read took 208 s; the next step would pass 75% of the 33K window; 1.0x the thinking-off step
+  ✓ Step, default        171 s            median; first 171 s, last 171 s; 38 reasoning tokens a step (median); 100% of the prefix reused per step; 2 of 2 replies were well-formed tool calls
+  ✓ Compaction, default  620 s            at 22K where the session ended: a 1,593-token summary written at 5.7 tok/s after 131 s and 1,222 reasoning tokens (60% of the conversation cached); next turn 207 s (0 of 14,721 tokens cached)
+  ✓ Sustain              +10%             35.4 -> 38.8 tok/s over 21 runs in 5 min; thermal nominal -> fair; +2% against the first writing row (38.2)
+  ✓ Memory               28.1 GB peak     idle 22.8 GB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  Qwen3.8-27B-MLX-4bit                                       ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Writing    38.2 tok/s  T = 0.6   ·   40.0 tok/s  greedy                 │
+  │                                                                          │
+  │                    4K      16K  context                                  │
+  │  Reading         73.7     63.6  tok/s                                    │
+  │  Follow-up       0.62     0.77  s                                        │
+  │  Writing         22.2      7.5  tok/s                                    │
+  │  Agent step      70.2     92.2  s                                        │
+  │  Recall           3/3      3/3                                           │
+  │  Memory          27.1     26.0  GB                                       │
+  │                                                                          │
+  │  Window     33K declared  ·  tested to 16K                               │
+  │  Session    1 x 8K results  ·  169 s a step  ·  6.3 min  ·  13K -> 22K   │
+  │  Compaction 575 s at 22K  ·  2,048-token summary  ·  next turn 207 s     │
+  │  Default    thinking as served, no switch sent:                          │
+  │             171 s a step  ·  6.3 min  ·  38 reasoning tokens a step  ·  …│
+  │  Cache      follow-up hit  ·  new question hit  ·  survives others       │
+  │  Tool calls 10/10 valid  ·  round trip failed                            │
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     28.1 GB peak  ·  idle 22.8 GB                                │
+  │  Sustain    +10% over 5 min  ·  thermal nominal -> fair                  │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             busy: Google Chrome He 38%, Google Chrome He 32%  ·  elapsed…│
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ≈ projection, not a measurement: a 12-turn agent task at 16K context would take about 22.7 min (cold read + 12 agent steps)
+  ≈ projection, not a measurement: a harness that compacts with a different system prompt misses the cache and re-reads the 22K conversation first: about 5.7 min at the 16K reading rate
+  ! contention: Google Chrome Helper (Aperitif) 38%, Google Chrome Helper (Aperitif Renderer) 32%, claude 22% ran during the benchmark
+  ! contention: Google Chrome Helper (Aperitif Renderer) 160%, Claude Helper (Renderer) 58%, Google Chrome Helper (Aperitif) 55% during the 16K read; that rate may be low
+  ! window probe at 41K failed: stream error: {"message": "This server's maximum context length is 32768 tokens,
+  ! compaction: only 60% of the conversation was cached when the summary was requested
+  ! compaction, default: only 60% of the conversation was cached when the summary was requested
+  › Saved results/benchcode-20261110-210454-m1-max-Qwen3.8-27B-MLX-4bit.json
+exit 0

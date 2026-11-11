@@ -1,0 +1,1082 @@
+{
+ "benchcode": "0.3.0",
+ "date": "2026-11-10T19:58:25",
+ "server_url": "http://127.0.0.1:8080",
+ "corpus_sha256": "58a7756fd94fc48a7b7306d330b2c44663bdf22faa943f82430966c2878081b2",
+ "corpus_frozen": true,
+ "rows": [
+  {
+   "mark": "!",
+   "label": "Machine busy",
+   "value": "4 processes",
+   "note": "over 20% CPU: Google Chrome Helper (Aperitif) 38%, Google Chrome Helper (Aperitif Renderer) 32%, claude 22%; measuring anyway, numbers may be low"
+  },
+  {
+   "mark": "\u2713",
+   "label": "First request",
+   "value": "15.0 s",
+   "note": "a 1K-token prompt and a short answer; then 15.8 s: 1.0x on the first"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Thinking",
+   "value": "off by switch",
+   "note": "on by default; enable_thinking=false / reasoning_effort=none turns it off; 68% of output is reasoning at the server's default"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Warmed up",
+   "value": "54.1 s",
+   "note": "a 2.9K-token prompt and a tool call"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing, T = 0.6",
+   "value": "38.2 tok/s",
+   "note": "35.6\u201341.8, 5 of 5 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing, greedy",
+   "value": "40.0 tok/s",
+   "note": "39.5\u201340.3, 5 of 5 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Reading 4K",
+   "value": "73.7 tok/s",
+   "note": "4,188 tokens in 56.8 s"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 4K",
+   "value": "0.62 s",
+   "note": "median of 3 turns; cache hit, 4242 tokens reused; 91x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 4K",
+   "value": "22.2 tok/s",
+   "note": "58% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 4K",
+   "value": "70.2 s",
+   "note": "a 4K-token tool result read at 63.8 tok/s, then 27 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 4K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 4K",
+   "value": "27.1 GB",
+   "note": "now; 27.6 GB peak so far"
+  },
+  {
+   "mark": "!",
+   "label": "Reading 16K",
+   "value": "63.6 tok/s",
+   "note": "16,334 tokens in 257 s; busy at the end of the read: Google Chrome Helper (Aperitif Renderer) 160%, Claude Helper (Renderer) 58%, Google Chrome Helper (Aperitif) 55%"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Follow-up at 16K",
+   "value": "0.77 s",
+   "note": "median of 3 turns; cache hit, 16400 tokens reused; 332x faster than the cold read"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Writing at 16K",
+   "value": "7.5 tok/s",
+   "note": "20% of the short-context rate, 3 of 3 runs valid"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent step at 16K",
+   "value": "92.2 s",
+   "note": "a 4K-token tool result read at 54.8 tok/s, then 64 tokens"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Recall at 16K",
+   "value": "3/3",
+   "note": "three facts planted in the document, asked in the same request"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory at 16K",
+   "value": "26.0 GB",
+   "note": "now; 27.6 GB peak so far"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Window",
+   "value": "tested to 16K",
+   "note": "33K declared by /v1/models (context_length); not probed past the declared window"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Cache survival",
+   "value": "hit / hit",
+   "note": "new question on the same prefix: hit; prefix after another conversation: kept"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Tool calls",
+   "value": "10/10 valid",
+   "note": "round trip FAILED; forced choice honoured; 1 chose another tool first (glob), which is not an error; with thinking on: structured"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Protocol",
+   "value": "ok",
+   "note": "usage in streams; finish reasons correct; when a tool call is cut by the output cap, a partial call is streamed"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Agent session",
+   "value": "6.3 min",
+   "note": "1 steps of 8K tool results, 13K -> 22K context; the first read took 208 s; the next step would pass 75% of the 33K window"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Session step",
+   "value": "169 s",
+   "note": "median; first 169 s, last 169 s; 100% of the prefix reused per step; 2 of 2 replies were well-formed tool calls"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Compaction at 22K",
+   "value": "575 s",
+   "note": "where the session ended: a 2,048-token summary written at 4.9 tok/s after 159 s (60% of the conversation cached); cut at 2048 tokens; next turn 207 s (0 of 15,142 tokens cached)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Tool calls, default",
+   "value": "10/10 valid",
+   "note": "no thinking switch sent; 2.43 s a call (median); 32 reasoning tokens a call (median)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Session, default",
+   "value": "6.3 min",
+   "note": "no thinking switch sent; 1 steps of 8K tool results, 13K -> 22K context; the first read took 208 s; the next step would pass 75% of the 33K window; 1.0x the thinking-off step"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Step, default",
+   "value": "171 s",
+   "note": "median; first 171 s, last 171 s; 38 reasoning tokens a step (median); 100% of the prefix reused per step; 2 of 2 replies were well-formed tool calls"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Compaction, default",
+   "value": "620 s",
+   "note": "at 22K where the session ended: a 1,593-token summary written at 5.7 tok/s after 131 s and 1,222 reasoning tokens (60% of the conversation cached); next turn 207 s (0 of 14,721 tokens cached)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Sustain",
+   "value": "+10%",
+   "note": "35.4 -> 38.8 tok/s over 21 runs in 5 min; thermal nominal -> fair; +2% against the first writing row (38.2)"
+  },
+  {
+   "mark": "\u2713",
+   "label": "Memory",
+   "value": "28.1 GB peak",
+   "note": "idle 22.8 GB before the first request; includes every conversation the server still keeps"
+  }
+ ],
+ "flags": [
+  "contention: Google Chrome Helper (Aperitif) 38%, Google Chrome Helper (Aperitif Renderer) 32%, claude 22% ran during the benchmark",
+  "contention: Google Chrome Helper (Aperitif Renderer) 160%, Claude Helper (Renderer) 58%, Google Chrome Helper (Aperitif) 55% during the 16K read; that rate may be low",
+  "window probe at 41K failed: stream error: {\"message\": \"This server's maximum context length is 32768 tokens,",
+  "compaction: only 60% of the conversation was cached when the summary was requested",
+  "compaction, default: only 60% of the conversation was cached when the summary was requested"
+ ],
+ "invalid": [],
+ "depth": {
+  "4000": {
+   "size": 4000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 56.8019,
+    "total_s": 58.02,
+    "prompt_tokens": 4188,
+    "cached_tokens": 0,
+    "completion_tokens": 26,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 89,
+    "reasoning_chars": 0,
+    "events": 6,
+    "timings": null
+   },
+   "prompt_tokens": 4188,
+   "ttft_s": 56.80187966598896,
+   "prefill_tps": 73.72995444211739,
+   "cold_cached": 0,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. On the fridge door in the Lisbon office kitchen.\n2. Bramble.\n3. Every second Thursday.",
+   "busy_after_read": [],
+   "followups": [
+    {
+     "ttft_s": 0.6211947499832604,
+     "prompt_tokens": 4236,
+     "cached_tokens": 4214,
+     "finish": "stop",
+     "new_tps": 35.41562448908791
+    },
+    {
+     "ttft_s": 0.6237315420003142,
+     "prompt_tokens": 4269,
+     "cached_tokens": 4242,
+     "finish": "stop",
+     "new_tps": 43.2878541197559
+    },
+    {
+     "ttft_s": 0.6123240419838112,
+     "prompt_tokens": 4298,
+     "cached_tokens": 4278,
+     "finish": "stop",
+     "new_tps": 32.662444439065105
+    }
+   ],
+   "followup_ttft_s": 0.6211947499832604,
+   "followup_cached": 4242,
+   "cache_saving": 91.4397291147738,
+   "cache_hit": true,
+   "write_tps": 22.159747079647666,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.5807424149907411,
+   "step": {
+    "total_s": 70.20506033301353,
+    "ttft_s": 66.57657150001614,
+    "new_tokens": 4245,
+    "cached_tokens": 4382,
+    "new_tps": 63.76116859665822,
+    "answer_tokens": 27
+   },
+   "memory_bytes": 29057890008,
+   "memory_peak_bytes": 29664442024,
+   "mapped_bytes": 6275072
+  },
+  "16000": {
+   "size": 16000,
+   "protocol": "kapitsa prompt with 3 planted lines, same character count",
+   "reading": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 256.6622,
+    "total_s": 262.542,
+    "prompt_tokens": 16334,
+    "cached_tokens": 0,
+    "completion_tokens": 38,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 138,
+    "reasoning_chars": 0,
+    "events": 11,
+    "timings": null
+   },
+   "prompt_tokens": 16334,
+   "ttft_s": 256.6621775419917,
+   "prefill_tps": 63.64007410997534,
+   "cold_cached": 0,
+   "recall": 3,
+   "finish": "stop",
+   "answer": "1. The on-call rota is pinned to the fridge door in the Lisbon office kitchen.\n2. Priya's cat is called Bramble.\n3. Every second Thursday.",
+   "busy_after_read": [
+    "Google Chrome Helper (Aperitif Renderer) 160%",
+    "Claude Helper (Renderer) 58%",
+    "Google Chrome Helper (Aperitif) 55%"
+   ],
+   "followups": [
+    {
+     "ttft_s": 0.7736555000010412,
+     "prompt_tokens": 16394,
+     "cached_tokens": 16372,
+     "finish": "stop",
+     "new_tps": 28.43642939263069
+    },
+    {
+     "ttft_s": 0.7734567500010598,
+     "prompt_tokens": 16427,
+     "cached_tokens": 16400,
+     "finish": "stop",
+     "new_tps": 34.90822208218236
+    },
+    {
+     "ttft_s": 0.6849705000058748,
+     "prompt_tokens": 16458,
+     "cached_tokens": 16438,
+     "finish": "stop",
+     "new_tps": 29.198337738382115
+    }
+   ],
+   "followup_ttft_s": 0.7734567500010598,
+   "followup_cached": 16400,
+   "cache_saving": 331.83778865675424,
+   "cache_hit": true,
+   "write_tps": 7.539634135457788,
+   "write_runs": 3,
+   "write_stopped_early": 0,
+   "write_retention": 0.1975918461629844,
+   "step": {
+    "total_s": 92.15704525000183,
+    "ttft_s": 81.3798436250072,
+    "new_tokens": 4457,
+    "cached_tokens": 16554,
+    "new_tps": 54.767861444137864,
+    "answer_tokens": 64
+   },
+   "memory_bytes": 27950888712,
+   "memory_peak_bytes": 29664442024,
+   "mapped_bytes": 6275072
+  }
+ },
+ "once": {
+  "quiet": {
+   "claude": 22,
+   "sysmond": 21,
+   "Google Chrome Helper (Aperitif Renderer)": 32,
+   "Google Chrome Helper (Aperitif)": 38
+  },
+  "first_request": {
+   "totals_s": [
+    15.037,
+    16.084,
+    15.541
+   ],
+   "penalty": 0.95
+  },
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.685
+  },
+  "warmup": {
+   "prompt": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 36.4661,
+    "total_s": 44.18,
+    "prompt_tokens": 2923,
+    "cached_tokens": 0,
+    "completion_tokens": 139,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 620,
+    "reasoning_chars": 0,
+    "events": 41,
+    "timings": null
+   },
+   "tool": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 9.5308,
+    "total_s": 9.936,
+    "prompt_tokens": 738,
+    "cached_tokens": 0,
+    "completion_tokens": 27,
+    "reasoning_tokens": 0,
+    "finish": "tool_calls",
+    "tool_calls": [
+     "read"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 0,
+    "events": 5,
+    "timings": null
+   }
+  },
+  "writing": {
+   "median_tps": 38.15761774521147,
+   "min_tps": 35.62439171136648,
+   "max_tps": 41.83280950243161,
+   "valid_runs": 5,
+   "runs": 5,
+   "draft_acceptance": null,
+   "flags": []
+  },
+  "writing_greedy": {
+   "median_tps": 40.01885899261101,
+   "min_tps": 39.466530226902734,
+   "max_tps": 40.278951588148,
+   "valid_runs": 5,
+   "runs": 5,
+   "draft_acceptance": null,
+   "flags": []
+  },
+  "cache_survival": {
+   "cold": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 61.5858,
+    "total_s": 63.623,
+    "prompt_tokens": 4190,
+    "cached_tokens": 0,
+    "completion_tokens": 28,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 96,
+    "reasoning_chars": 0,
+    "events": 7,
+    "timings": null
+   },
+   "new_question": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 0.6588,
+    "total_s": 2.441,
+    "prompt_tokens": 4131,
+    "cached_tokens": 4113,
+    "completion_tokens": 45,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 180,
+    "reasoning_chars": 0,
+    "events": 9,
+    "timings": null
+   },
+   "after_other": {
+    "status": 200,
+    "error": null,
+    "ttft_s": 2.6354,
+    "total_s": 2.837,
+    "prompt_tokens": 4245,
+    "cached_tokens": 4113,
+    "completion_tokens": 5,
+    "reasoning_tokens": 0,
+    "finish": "stop",
+    "tool_calls": [],
+    "content_chars": 18,
+    "reasoning_chars": 0,
+    "events": 2,
+    "timings": null
+   },
+   "new_question_hit": true,
+   "survives_other_conversation": true,
+   "inferred_from_timing": false
+  },
+  "tools": {
+   "trials": [
+    {
+     "i": 0,
+     "prompt": "Read the file src/main.py.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "read",
+     "expected_tool": true
+    },
+    {
+     "i": 1,
+     "prompt": "Create a file named notes/todo.md whose content is exactly: ",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "write",
+     "expected_tool": true
+    },
+    {
+     "i": 2,
+     "prompt": "Run the test suite with: python3 -m pytest -q",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "bash",
+     "expected_tool": true
+    },
+    {
+     "i": 3,
+     "prompt": "In config.py replace the line `TIMEOUT = 30` with `TIMEOUT =",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "glob",
+     "expected_tool": false
+    },
+    {
+     "i": 4,
+     "prompt": "Find every Python file under the src directory.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "glob",
+     "expected_tool": true
+    },
+    {
+     "i": 5,
+     "prompt": "Search the repository for the string TODO.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "grep",
+     "expected_tool": true
+    },
+    {
+     "i": 6,
+     "prompt": "Write a C++ hello world program to hello.cpp. It must #inclu",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "write",
+     "expected_tool": true
+    },
+    {
+     "i": 7,
+     "prompt": "Read lines 10 to 20 of README.md.",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "read",
+     "expected_tool": true
+    },
+    {
+     "i": 8,
+     "prompt": "Run `ls -la` in the current directory with a timeout of 5000",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "bash",
+     "expected_tool": true
+    },
+    {
+     "i": 9,
+     "prompt": "Create data/sample.json containing a JSON object with keys \"",
+     "ok": true,
+     "why": "",
+     "status": 200,
+     "finish": "tool_calls",
+     "tool": "write",
+     "expected_tool": true
+    }
+   ],
+   "passed": 10,
+   "total": 10,
+   "round_trip": false,
+   "forced_choice": true,
+   "tool_call_with_thinking_on": "structured",
+   "other_tool_first": 1
+  },
+  "protocol": {
+   "stream_usage": true,
+   "plain_with_tools_finish": "stop",
+   "plain_with_tools_called": false,
+   "cap_finish": "length",
+   "truncated_tool_call": {
+    "status": 200,
+    "finish": "length",
+    "tool_calls": 1,
+    "error": null,
+    "content_chars": 0,
+    "events": 8
+   }
+  },
+  "session": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [
+    {
+     "total_s": 169.35206799997832,
+     "ttft_s": 157.90559083299013,
+     "prompt_tokens": 21673,
+     "cached_tokens": 13063,
+     "new_tokens": 8610,
+     "cache_share": 0.9994644223412394,
+     "problem": null,
+     "reasoning_tokens": 0,
+     "completion_tokens": 75,
+     "finish": "tool_calls"
+    }
+   ],
+   "stopped": "the next step would pass 75% of the 33K window",
+   "thinking": "off",
+   "start": {
+    "total_s": 207.5644947499968,
+    "ttft_s": 205.0090099159861,
+    "prompt_tokens": 13070,
+    "valid_call": true,
+    "reasoning_tokens": 0,
+    "finish": "tool_calls"
+   },
+   "total_s": 376.9165627499751,
+   "median_step_s": 169.35206799997832,
+   "first_step_s": 169.35206799997832,
+   "last_step_s": 169.35206799997832,
+   "start_tokens": 13070,
+   "end_tokens": 21673,
+   "valid_calls": 2,
+   "replies": 2,
+   "median_cache_share": 0.9994644223412394,
+   "median_reasoning_tokens": 0,
+   "steps_cut": 0
+  },
+  "compaction": {
+   "depth_tokens": 21673,
+   "thinking": "off",
+   "total_s": 575.2121865410008,
+   "ttft_s": 159.15534341600141,
+   "summary_tokens": 2048,
+   "summary_chars": 8252,
+   "write_tps": 4.919388823652603,
+   "cached_tokens": 13025,
+   "prompt_tokens": 21773,
+   "finish": "length",
+   "called_tool": false,
+   "reasoning_tokens": 0,
+   "next_turn": {
+    "total_s": 207.0022276249947,
+    "ttft_s": 201.67427158300416,
+    "prompt_tokens": 15142,
+    "cached_tokens": 0,
+    "problem": null,
+    "reasoning_tokens": 0
+   }
+  },
+  "default_thinking": {
+   "switch_sent": null,
+   "reply_cap": 4096
+  },
+  "tools_default": {
+   "trials": [
+    {
+     "i": 0,
+     "ok": true,
+     "why": "",
+     "total_s": 10.939665624988265,
+     "reasoning_tokens": 19,
+     "completion_tokens": 47,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 1,
+     "ok": true,
+     "why": "",
+     "total_s": 7.531849708000664,
+     "reasoning_tokens": 167,
+     "completion_tokens": 209,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 2,
+     "ok": true,
+     "why": "",
+     "total_s": 2.220475540991174,
+     "reasoning_tokens": 27,
+     "completion_tokens": 78,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 3,
+     "ok": true,
+     "why": "",
+     "total_s": 2.072248833021149,
+     "reasoning_tokens": 37,
+     "completion_tokens": 67,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 4,
+     "ok": true,
+     "why": "",
+     "total_s": 1.904473834001692,
+     "reasoning_tokens": 22,
+     "completion_tokens": 62,
+     "finish": "tool_calls",
+     "tool": "glob"
+    },
+    {
+     "i": 5,
+     "ok": true,
+     "why": "",
+     "total_s": 2.0197925420070533,
+     "reasoning_tokens": 28,
+     "completion_tokens": 66,
+     "finish": "tool_calls",
+     "tool": "grep"
+    },
+    {
+     "i": 6,
+     "ok": true,
+     "why": "",
+     "total_s": 4.1545894170121755,
+     "reasoning_tokens": 53,
+     "completion_tokens": 125,
+     "finish": "tool_calls",
+     "tool": "write"
+    },
+    {
+     "i": 7,
+     "ok": true,
+     "why": "",
+     "total_s": 2.642899625003338,
+     "reasoning_tokens": 37,
+     "completion_tokens": 90,
+     "finish": "tool_calls",
+     "tool": "read"
+    },
+    {
+     "i": 8,
+     "ok": true,
+     "why": "",
+     "total_s": 1.9294361670035869,
+     "reasoning_tokens": 28,
+     "completion_tokens": 73,
+     "finish": "tool_calls",
+     "tool": "bash"
+    },
+    {
+     "i": 9,
+     "ok": true,
+     "why": "",
+     "total_s": 3.2469630419800524,
+     "reasoning_tokens": 39,
+     "completion_tokens": 97,
+     "finish": "tool_calls",
+     "tool": "write"
+    }
+   ],
+   "passed": 10,
+   "total": 10,
+   "median_s": 2.431687582997256,
+   "median_reasoning_tokens": 32.5,
+   "cut": 0
+  },
+  "session_default": {
+   "steps_planned": 8,
+   "result_tokens": 8000,
+   "steps": [
+    {
+     "total_s": 171.23157908400754,
+     "ttft_s": 158.98742112499895,
+     "prompt_tokens": 21709,
+     "cached_tokens": 13101,
+     "new_tokens": 8608,
+     "cache_share": 0.9996184953456432,
+     "problem": null,
+     "reasoning_tokens": 38,
+     "completion_tokens": 83,
+     "finish": "tool_calls"
+    }
+   ],
+   "stopped": "the next step would pass 75% of the 33K window",
+   "thinking": "default",
+   "start": {
+    "total_s": 208.20281841699034,
+    "ttft_s": 188.8855257499963,
+    "prompt_tokens": 13106,
+    "valid_call": true,
+    "reasoning_tokens": 68,
+    "finish": "tool_calls"
+   },
+   "total_s": 379.4343975009979,
+   "median_step_s": 171.23157908400754,
+   "first_step_s": 171.23157908400754,
+   "last_step_s": 171.23157908400754,
+   "start_tokens": 13106,
+   "end_tokens": 21709,
+   "valid_calls": 2,
+   "replies": 2,
+   "median_cache_share": 0.9996184953456432,
+   "median_reasoning_tokens": 38,
+   "steps_cut": 0
+  },
+  "compaction_default": {
+   "depth_tokens": 21709,
+   "thinking": "default",
+   "total_s": 619.9534942079918,
+   "ttft_s": 131.3528987079917,
+   "summary_tokens": 1593,
+   "summary_chars": 6265,
+   "write_tps": 5.740160260115597,
+   "cached_tokens": 13108,
+   "prompt_tokens": 21809,
+   "finish": "stop",
+   "called_tool": false,
+   "reasoning_tokens": 1222,
+   "next_turn": {
+    "total_s": 206.5283967090072,
+    "ttft_s": 197.5045437499939,
+    "prompt_tokens": 14721,
+    "cached_tokens": 0,
+    "problem": null,
+    "reasoning_tokens": 34
+   }
+  },
+  "sustain": {
+   "seconds": 300,
+   "runs": 21,
+   "thermal_start": "nominal",
+   "thermal_end": "fair",
+   "first_third_tps": 35.3638257702877,
+   "last_third_tps": 38.817154496900855,
+   "falloff_pct": -9.765144611459453,
+   "vs_fresh_pct": 1.7284536893610314
+  },
+  "memory": {
+   "idle_bytes": 24457901568,
+   "peak_bytes": 30202525664,
+   "end_bytes": 29060397120,
+   "mapped_bytes": 6275072,
+   "swap_growth_bytes": -169271624
+  }
+ },
+ "machine": {
+  "hw_model": "MacBookPro18,2",
+  "chip": "Apple M1 Max",
+  "arch": "arm64",
+  "macos": "26.5.1",
+  "build": "25F80",
+  "ncpu": 10,
+  "memsize_bytes": 68719476736,
+  "gpu_wired_limit_bytes": 65283293184,
+  "gpu_cores": 32,
+  "chip_short": "M1 Max",
+  "name": "MacBook Pro",
+  "python": "3.14.5"
+ },
+ "server": {
+  "process": "tensorfold-native",
+  "pid": 5609
+ },
+ "model": "Qwen3.8-27B-MLX-4bit",
+ "model_entry": {
+  "id": "Qwen3.8-27B-MLX-4bit",
+  "object": "model",
+  "created": 1794369505,
+  "owned_by": "tensorfold",
+  "capabilities": {
+   "text_generation": true,
+   "context_fitted": false,
+   "call_gates": false,
+   "loop_guard": true,
+   "thinking_budget": true,
+   "reasoning": true,
+   "answer_limit": true,
+   "structures": true,
+   "logprobs": false,
+   "penalties": false,
+   "prompt_logprobs": false,
+   "prompt_cache": true,
+   "warm_turns": true,
+   "plain_only": false,
+   "decides": false,
+   "pictures": false,
+   "greedy_only": false,
+   "slide_conversations": false,
+   "vision": false,
+   "speech": false,
+   "embeddings": false,
+   "readouts": false,
+   "rerank": false,
+   "thinking_switch": true,
+   "thinking_applicable": true
+  },
+  "context_length": 32768,
+  "max_model_len": 32768,
+  "reasoning": {
+   "default_enabled": true,
+   "supported_efforts": [
+    "xhigh",
+    "medium",
+    "low",
+    "none"
+   ]
+  }
+ },
+ "window_declared": 32768,
+ "window_source": "context_length",
+ "conditions_start": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "nominal",
+  "swap_used_bytes": 492432261,
+  "loadavg": "{ 1.70 1.79 1.52 }",
+  "busy_processes": [
+   "claude 26%"
+  ]
+ },
+ "memory_idle_bytes": 24457901568,
+ "ladder_sizes": [
+  4000,
+  16000
+ ],
+ "window": {
+  "declared": 32768,
+  "source": "context_length",
+  "tested_to": 16000,
+  "skipped": [],
+  "past_window": null
+ },
+ "conditions_end": {
+  "power": "AC",
+  "battery_pct": 100,
+  "power_mode": "automatic",
+  "low_power_mode": false,
+  "thermal": "fair",
+  "swap_used_bytes": 323160637,
+  "loadavg": "{ 0.42 0.42 0.88 }",
+  "busy_processes": []
+ },
+ "request": {
+  "sampling": {
+   "temperature": 0.6,
+   "top_p": 0.95,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "frequency_penalty": 0.0,
+   "repeat_penalty": 1.0
+  },
+  "greedy": {
+   "temperature": 0.0,
+   "top_p": 1.0,
+   "top_k": 1
+  },
+  "no_think": {
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "reasoning_effort": "none"
+  },
+  "stream_options": {
+   "include_usage": true
+  },
+  "dropped_fields": [],
+  "models_extensions_used": [
+   "context_length"
+  ]
+ },
+ "elapsed_s": 3989.3,
+ "summary": {
+  "writing_tps": 38.15761774521147,
+  "writing_greedy_tps": 40.01885899261101,
+  "reading_tps": {
+   "4000": 73.72995444211739,
+   "16000": 63.64007410997534
+  },
+  "followup_ttft_s": {
+   "4000": 0.6211947499832604,
+   "16000": 0.7734567500010598
+  },
+  "cache_saving": {
+   "4000": 91.4397291147738,
+   "16000": 331.83778865675424
+  },
+  "writing_at_depth_tps": {
+   "4000": 22.159747079647666,
+   "16000": 7.539634135457788
+  },
+  "agent_step_s": {
+   "4000": 70.20506033301353,
+   "16000": 92.15704525000183
+  },
+  "recall": {
+   "4000": 3,
+   "16000": 3
+  },
+  "window": {
+   "declared": 32768,
+   "source": "context_length",
+   "tested_to": 16000,
+   "skipped": [],
+   "past_window": null
+  },
+  "tools": "10/10",
+  "thinking": {
+   "on_by_default": true,
+   "switch": "both",
+   "switch_works": true,
+   "can_turn_on": true,
+   "leak": [],
+   "reasoning_share_when_on": 0.685
+  },
+  "memory_peak_bytes": 30202525664,
+  "session": {
+   "total_s": 376.9165627499751,
+   "median_step_s": 169.35206799997832,
+   "first_step_s": 169.35206799997832,
+   "last_step_s": 169.35206799997832,
+   "start_tokens": 13070,
+   "end_tokens": 21673,
+   "valid_calls": 2,
+   "replies": 2
+  },
+  "compaction": {
+   "depth_tokens": 21673,
+   "total_s": 575.2121865410008,
+   "summary_tokens": 2048,
+   "write_tps": 4.919388823652603
+  },
+  "default_thinking": {
+   "session": {
+    "total_s": 379.4343975009979,
+    "median_step_s": 171.23157908400754,
+    "median_reasoning_tokens": 38,
+    "valid_calls": 2,
+    "replies": 2,
+    "steps_cut": 0
+   },
+   "compaction": {
+    "depth_tokens": 21709,
+    "total_s": 619.9534942079918,
+    "summary_tokens": 1593,
+    "reasoning_tokens": 1222
+   },
+   "tools": {
+    "passed": 10,
+    "total": 10,
+    "median_s": 2.431687582997256,
+    "median_reasoning_tokens": 32.5,
+    "cut": 0
+   },
+   "skipped": null
+  },
+  "cold_compaction_min": {
+   "depth_tokens": 21673,
+   "prefill_tps": 63.64007410997534,
+   "from_rung": 16000,
+   "minutes": 5.7
+  },
+  "projected_task_min": {
+   "at": 16000,
+   "turns": 12,
+   "minutes": 22.7
+  }
+ },
+ "result_file": "deep-tensorfold-27b.json"
+}

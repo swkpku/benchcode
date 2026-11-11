@@ -1,0 +1,78 @@
+note: started with --context 139264; every other setting default
+
+   benchcode 0.3.0  ·  http://127.0.0.1:8080  ·  served by tensorfold-native
+  MacBook Pro  ·  M1 Max  ·  32-core GPU  ·  64.0 GB  ·  macOS 26.5.1
+  Qwen3.8-27B-MLX-4bit
+
+  ✓ Machine quiet        5 s              no other process over 20% CPU
+  ✓ First request        16.0 s           a 1K-token prompt and a short answer; then 15.6 s: 1.0x on the first
+  ✓ Thinking             off by switch    on by default; enable_thinking=false / reasoning_effort=none turns it off; 61% of output is reasoning at the server's default
+  ✓ Warmed up            60.0 s           a 2.9K-token prompt and a tool call
+  ✓ Writing, T = 0.6     38.8 tok/s       30.6–41.7, 5 of 5 runs valid
+  ✓ Writing, greedy      40.1 tok/s       39.7–40.6, 5 of 5 runs valid
+  ── 4K context ──────────────────────────────────────────────────
+  ✓ Reading 4K           81.0 tok/s       4,187 tokens in 51.7 s
+  ✓ Follow-up at 4K      0.61 s           median of 3 turns; cache hit, 4241 tokens reused; 85x faster than the cold read
+  ✓ Writing at 4K        23.2 tok/s       60% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 4K     117 s            a 4K-token tool result read at 77.2 tok/s, then 39 tokens
+  ✓ Recall at 4K         3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 4K         35.1 GB          now; 35.1 GB peak so far
+  ── 16K context ─────────────────────────────────────────────────
+  ✓ Reading 16K          75.2 tok/s       16,336 tokens in 217 s
+  ✓ Follow-up at 16K     0.68 s           median of 3 turns; cache hit, 16433 tokens reused; 320x faster than the cold read
+  ✓ Writing at 16K       8.7 tok/s        22% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 16K    310 s            a 4K-token tool result read at 70.6 tok/s, then 64 tokens
+  ✓ Recall at 16K        3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 16K        35.1 GB          now; 35.1 GB peak so far
+  ── 32K context ─────────────────────────────────────────────────
+  ✓ Reading 32K          68.3 tok/s       32,734 tokens in 479 s
+  ✓ Follow-up at 32K     0.76 s           median of 3 turns; cache hit, 32812 tokens reused; 629x faster than the cold read
+  ✓ Writing at 32K       4.6 tok/s        12% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 32K    595 s            a 4K-token tool result read at 65.4 tok/s, then 60 tokens
+  ✓ Recall at 32K        3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 32K        35.1 GB          now; 35.1 GB peak so far
+  ── 64K context ─────────────────────────────────────────────────
+  ✓ Reading 64K          57.7 tok/s       65,424 tokens in 1134 s
+  ✓ Follow-up at 64K     0.93 s           median of 3 turns; cache hit, 65514 tokens reused; 1213x faster than the cold read
+  ✓ Writing at 64K       2.5 tok/s        7% of the short-context rate, 3 of 3 runs valid
+  ✓ Agent step at 64K    637 s            a 4K-token tool result, then 0 tokens
+  ✓ Recall at 64K        3/3              three facts planted in the document, asked in the same request
+  ✓ Memory at 64K        35.1 GB          now; 35.1 GB peak so far
+  ✓ Window               tested to 64K    139K declared by /v1/models (context_length); not probed past the declared window
+  ── once per run ────────────────────────────────────────────────
+  · Cache survival       untested         URLError: <urlopen error [Errno 61] Connection refused>
+  ! Tool calls           0/10 valid       round trip no call to complete; forced choice rejected; with thinking on: NO call; misses: URLError: <urlopen error [Errno 61] Connection refused>
+  ! Protocol             1 issue          no usage in streams
+  ── agent session ───────────────────────────────────────────────
+  ✗ Agent session        failed           URLError: <urlopen error [Errno 61] Connection refused>
+  ✗ Server health        down             the server stopped answering; the remaining rows are skipped
+  ✓ Memory               35.1 GB peak     idle 34.9 GB before the first request; includes every conversation the server still keeps
+
+  ╭──────────────────────────────────────────────────────────────────────────╮
+  │  Qwen3.8-27B-MLX-4bit                                       ● deep run  │
+  │  MacBook Pro  ·  M1 Max 32-core GPU  ·  64.0 GB                         │
+  │                                                                          │
+  │  Writing    38.8 tok/s  T = 0.6   ·   40.1 tok/s  greedy                 │
+  │                                                                          │
+  │                    4K      16K      32K      64K  context                │
+  │  Reading         81.0     75.2     68.3     57.7  tok/s                  │
+  │  Follow-up       0.61     0.68     0.76     0.93  s                      │
+  │  Writing         23.2      8.7      4.6      2.5  tok/s                  │
+  │  Agent step       117      310      595      637  s                      │
+  │  Recall           3/3      3/3      3/3      3/3                         │
+  │  Memory          35.1     35.1     35.1     35.1  GB                     │
+  │                                                                          │
+  │  Window     139K declared  ·  tested to 64K                              │
+  │  Tool calls 0/10 valid  ·  round trip –                                  │
+  │  Thinking   on by default, switched off                                  │
+  │  Memory     35.1 GB peak  ·  idle 34.9 GB                                │
+  │                                                                          │
+  │  Conditions AC power 100%  ·  automatic power mode  ·  thermal fair      │
+  │             no other process over 20% CPU  ·  elapsed 153.9 min          │
+  ╰──────────────────────────────────────────────────────────────────────────╯
+  ≈ projection, not a measurement: a 12-turn agent task at 16K context would take about 65.6 min (cold read + 12 agent steps)
+  ✗ INVALID: server stopped answering after an over-long prompt
+  ! tools: only 0/10 calls well-formed (malformed calls are dropped by the harness)
+  ! protocol: no usage in streams
+  › Saved results/benchcode-20261110-234126-m1-max-Qwen3.8-27B-MLX-4bit.json
+exit 0

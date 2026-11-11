@@ -6,7 +6,7 @@ Reads each row's per-depth reading rate and agent-step time and draws them again
 one line per server-and-model pair: colour is the server, dash is the model."""
 import json, math, os, sys
 
-COLOURS = {"kapitsa": "#d9480f", "omlx": "#1c7ed6", "mlx-serve": "#2f9e44", "ollama": "#7048e8"}
+COLOURS = {"kapitsa": "#d9480f", "omlx": "#1c7ed6", "mlx-serve": "#2f9e44", "ollama": "#7048e8", "tensorfold": "#0ca678"}
 DASHES = {"27B": "", "35B-A3B": "7 4", "Flash-Next": "2 4"}
 THEMES = {"light": {"bg": "#ffffff", "fg": "#1f2328", "grid": "#d0d7de", "muted": "#59636e"},
           "dark": {"bg": "#0d1117", "fg": "#e6edf3", "grid": "#30363d", "muted": "#9198a1"}}
@@ -16,8 +16,11 @@ def pair(row):
     """(server, model) labels from a result row: the server from its process name, the model from its id."""
     proc = (row.get("server") or {}).get("process") or ""
     mid = str(row.get("model") or "")
-    server = "kapitsa" if "kapitsa" in proc else "ollama" if "ollama" in proc else "mlx-serve" if "mlx-serve" in proc else "omlx" if "python" in proc else proc
+    server = ("kapitsa" if "kapitsa" in proc else "ollama" if "ollama" in proc else "mlx-serve" if "mlx-serve" in proc
+              else "tensorfold" if proc.startswith("tensorfol") else "omlx" if "python" in proc else proc)
     model = "Flash-Next" if "flash" in mid.lower() else "35B-A3B" if "35b" in mid.lower() else "27B" if "27b" in mid.lower() else mid
+    if server == "tensorfold" and (row.get("window") or {}).get("declared", 0) > 100000:
+        model += " (139K ctx)"
     return server, model
 
 
@@ -36,7 +39,7 @@ def series(rows, pick):
 
 def chart(path, data, title, unit, ylog, theme):
     t = THEMES[theme]
-    W, H, L, R, T, B = 760, 420, 64, 190, 44, 48
+    W, H, L, R, T, B = 760, 420, 64, 210, 44, 48
     xs = sorted({k for _, pts in data for k, _ in pts})
     ys = [v for _, pts in data for _, v in pts]
     x0, x1 = math.log2(min(xs)), math.log2(max(xs))
@@ -80,7 +83,7 @@ def chart(path, data, title, unit, ylog, theme):
 
 def main(files):
     rows = [json.load(open(f)) for f in files]
-    order = {"kapitsa": 0, "omlx": 1, "mlx-serve": 2, "ollama": 3}
+    order = {"kapitsa": 0, "omlx": 1, "mlx-serve": 2, "ollama": 3, "tensorfold": 4}
     reading = sorted(series(rows, lambda d: d.get("prefill_tps")), key=lambda s: (order.get(s[0][0], 9), s[0][1]))
     step = sorted(series(rows, lambda d: (d.get("step") or {}).get("total_s")), key=lambda s: (order.get(s[0][0], 9), s[0][1]))
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")

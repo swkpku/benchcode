@@ -20,6 +20,7 @@ import os
 import platform
 import random
 import re
+import signal
 import statistics
 import subprocess
 import sys
@@ -1826,6 +1827,12 @@ def main(argv=None):
     args = ap.parse_args(argv)
     if args.quick and args.deep:
         ap.error("--quick and --deep are exclusive")
+    # a background process inherits SIGINT ignored from a non-interactive shell, and Python then keeps it ignored:
+    # install our own handlers so an interrupt or a plain kill both end the run with the partial row saved
+    def interrupt(signum, frame):
+        raise KeyboardInterrupt
+    signal.signal(signal.SIGINT, interrupt)
+    signal.signal(signal.SIGTERM, interrupt)
     try:
         return Bench(args).run()
     except KeyboardInterrupt:
